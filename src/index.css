@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+/* @import './variables/theme-variable.css'; */
+
+/* @tailwind base; */
+/* @tailwind components; */
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: "Fira Sans", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.login-button {
+  color: #FAA21B;
+}
+
+.ant-table-thead > tr > th {
+  color: white !important;
+  background: #FAA21B!important;
+}
+
+.editable-cell {
+  position: relative;
+}
+
+.editable-cell-value-wrap {
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.editable-row:hover .editable-cell-value-wrap {
+  padding: 4px 11px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+}
+
+[data-theme="dark"] .editable-row:hover .editable-cell-value-wrap {
+  border: 1px solid #434343;
+}
+
+.profile-card > .ant-card-body {
+  padding: 0 !important;
+}
+
+.ant-menu-item-selected {
+  background-color: #FAA21B !important;
+  border-left: 3px solid white;
+}
+
+.ant-tooltip-inner {
+  color: black !important;
+}
+
+.ant-btn-primary {
+  background-color: #FAA21B !important;
+  border: #FAA21B !important;
+}

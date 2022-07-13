@@ -1,0 +1,11 @@
+{
+  "code": 200,
+  "content": {
+    "user_data": {
+      "nik": 123123123,
+      "name": "mock user"
+    },
+    "scope": ["test-mock"]
+  },
+  "message": ""
+}
