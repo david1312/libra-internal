@@ -1,53 +1,74 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { Breadcrumb, Card, Divider, Select } from "antd";
+import { Breadcrumb, Button, Card, Divider, Select, Tooltip } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
-import { getMasterBrand } from "@/services/master";
 import { getListProduct } from "@/services/product";
-
-const columns = [
-  {
-    title: "No",
-    dataIndex: "no",
-    key: "no",
-  },
-  {
-    title: "NAME",
-    dataIndex: "nama_barang",
-    key: "nama",
-  },
-  {
-    title: "JENIS",
-    dataIndex: "jenis_ban",
-    key: "jenis",
-  },
-  {
-    title: "UKURAN",
-    dataIndex: "ukuran",
-    key: "ukuran",
-  },
-  {
-    title: "HARGA FINAL",
-    dataIndex: "harga_jual_final",
-    key: "harga_jual",
-  },
-  {
-    title: "GAMBAR",
-    dataIndex: "display_image",
-    key: "display_image",
-    align: "center",
-    render: (_: any, record: any) => (
-      <>
-        <img width="81px" src={record?.display_image}></img>
-      </>
-    ),
-  },
-];
+import Icon, { EyeOutlined } from "@ant-design/icons";
 
 const ListProduct = () => {
   const [listProduct, setListProduct] = useState<any>([]);
+  const navigate = useNavigate();
+
+  const columns = [
+    {
+      title: "No",
+      dataIndex: "no",
+      key: "no",
+    },
+    {
+      title: "NAME",
+      dataIndex: "nama_barang",
+      key: "nama",
+    },
+    {
+      title: "JENIS",
+      dataIndex: "jenis_ban",
+      key: "jenis",
+    },
+    {
+      title: "UKURAN",
+      dataIndex: "ukuran",
+      key: "ukuran",
+    },
+    {
+      title: "HARGA FINAL",
+      dataIndex: "harga_jual_final",
+      key: "harga_jual",
+    },
+    {
+      title: "GAMBAR",
+      dataIndex: "display_image",
+      key: "display_image",
+      align: "center",
+      render: (_: any, record: any) => (
+        <>
+          <img width="81px" src={record?.display_image}></img>
+        </>
+      ),
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      align: "center",
+      render: (_: any, record: any) => (
+        <>
+          <Tooltip title="Detail">
+            <Button
+              onClick={() => {
+                navigate("/list/product/" + record?.id);
+              }}
+              icon={<EyeOutlined />}
+              shape="circle"
+              type="primary"
+            />
+          </Tooltip>
+        </>
+      ),
+    },
+  ];
 
   const currentPath = useLocation().pathname;
 
