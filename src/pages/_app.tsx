@@ -4,7 +4,7 @@ import React, { ReactNode, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import Cookies from "js-cookie";
 import { getAnomToken } from "@/services/api";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {
   children: ReactNode | any;
@@ -23,12 +23,14 @@ async function initial(setLoading: any) {
 
 export default function App({ children }: Props) {
   const auth = Cookies.get("semesta.token");
+  const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = React.useState(
-    !Cookies.get("semesta.token") || !Cookies.get("semesta.anom.token")
+    !Cookies.get("semesta.anom.token")
   );
   useEffect(() => {
     initial(setLoading);
+    if (!auth) navigate("/login");
   }, []);
 
   if (loading) return <div>Loading...</div>;

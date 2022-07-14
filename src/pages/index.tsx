@@ -2,8 +2,17 @@ import withProtectedPage from "@/components/hocs/withProtectedPage";
 import LoginPage from "./login";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { Card, Col, Row, Statistic, Result } from "antd";
+import { getProfile } from "@/services/user";
+import { useEffect } from "react";
+import useStorage from "@/hooks/useStorage";
 
 function HomePage() {
+  const { set } = useStorage();
+  const { dataProfile, isLoading } = getProfile();
+
+  useEffect(() => {
+    if (!isLoading) set("profile", dataProfile);
+  }, [dataProfile]);
   return (
     <div className="site-statistic-demo-card">
       <Result

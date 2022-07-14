@@ -3,12 +3,12 @@ import { useRecoilValue } from "recoil";
 import { NavLink } from "react-router-dom";
 import { Avatar, Button, Layout, Menu, Tooltip } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import useTalent from "@/hooks/useStorage";
+import useStorage from "@/hooks/useStorage";
 
 const { Header, Content, Sider } = Layout;
 
 const LayoutComponent = (props: any) => {
-  const { set, get } = useTalent();
+  const { set, get } = useStorage();
 
   const profile = get("profile", []);
 
@@ -33,10 +33,12 @@ const LayoutComponent = (props: any) => {
           </div>
           <div className="flex">
             <div className="flex flex-col items-end">
-              <p className="mx-4 my-0 leading-normal">Lucky Solihin</p>
+              <p className="mx-4 my-0 leading-normal">
+                {profile?.name} / {profile?.email}
+              </p>
               <p className="mx-4 my-0 leading-normal italic">
-                <span className="text-blue-500">USER ACCESS: </span>
-                Superadmin
+                <span className="text-blue-500">CUSTOMER ID: </span>
+                {profile?.cust_id}
               </p>
             </div>
             <div>
