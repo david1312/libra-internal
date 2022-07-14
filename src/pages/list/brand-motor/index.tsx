@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { Breadcrumb, Card, Divider, Select } from "antd";
+import { Breadcrumb, Card, Divider } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getMasterBrand } from "@/services/master";
@@ -17,11 +17,20 @@ const columns = [
     dataIndex: "nama",
     key: "nama",
   },
+  {
+    title: "LOGO",
+    dataIndex: "icon",
+    key: "icon",
+    align: "center",
+    render: (_: any, record: any) => (
+      <>
+        <img width="81px" src={record?.icon}></img>
+      </>
+    ),
+  },
 ];
 
 const BrandBan = () => {
-  const { Option } = Select;
-
   const { dataMasterBrand } = getMasterBrand();
 
   const currentPath = useLocation().pathname;

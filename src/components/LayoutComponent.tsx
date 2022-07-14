@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Avatar, Button, Layout, Menu, Tooltip } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import useStorage from "@/hooks/useStorage";
+import Logo from "@/assets/logo.png";
 
 const { Header, Content, Sider } = Layout;
 
@@ -88,16 +89,25 @@ const LayoutComponent = (props: any) => {
               <Menu.Item key="4">
                 <NavLink to="/list/product">Daftar Product</NavLink>
               </Menu.Item>
+              <Menu.Item key="5">
+                <NavLink to="/list/transactions">Daftar Transaksi</NavLink>
+              </Menu.Item>
             </Menu.SubMenu>
             <div>
               <span
                 style={{
                   position: "absolute",
                   bottom: 20,
-                  left: 64,
+                  left: 54,
                 }}
               >
-                {" "}
+                <img
+                  width={24}
+                  height={24}
+                  alt={"Logo"}
+                  src={Logo}
+                  style={{ marginRight: "8px" }}
+                />
                 PT. Libra Corporindo
               </span>
             </div>

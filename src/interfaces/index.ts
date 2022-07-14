@@ -3,4 +3,5 @@ export enum ENDPOINT {
   LIST_PRODUCT = "/products",
   DETAIL_PRODUCT = "/products/detail",
   PROFILE = "/users/me ",
+  LIST_TRANSACTIONS = "/transactions/submit",
 }
