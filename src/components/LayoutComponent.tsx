@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useRecoilValue } from "recoil";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Avatar, Button, Layout, Menu, Tooltip } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import useStorage from "@/hooks/useStorage";
@@ -10,6 +10,10 @@ const { Header, Content, Sider } = Layout;
 
 const LayoutComponent = (props: any) => {
   const { set, get } = useStorage();
+
+  const location = useLocation();
+  const selectedKeys = [location.pathname];
+  const openKeys = "/" + location.pathname.split("/").slice(1, -1).join("/");
 
   const profile = get("profile", []);
 
@@ -73,23 +77,25 @@ const LayoutComponent = (props: any) => {
               height: "100%",
               borderRight: 0,
             }}
+            defaultSelectedKeys={[selectedKeys[0]]}
+            defaultOpenKeys={[openKeys]}
           >
-            <Menu.Item key="1">
+            <Menu.Item key="/">
               <NavLink to="/">Overview</NavLink>
             </Menu.Item>
-            <Menu.SubMenu key="sub1" title={"Pemesanan"}>
-              <Menu.Item key="2">
+            <Menu.SubMenu key="/pemesanan" title={"Pemesanan"}>
+              <Menu.Item key="/pemesanan/pemasangan">
                 <NavLink to="/pemesanan/pemasangan">Pemasangan Ban</NavLink>
               </Menu.Item>
             </Menu.SubMenu>
-            <Menu.SubMenu key="sub2" title={"List Barang"}>
-              <Menu.Item key="3">
+            <Menu.SubMenu key="/list" title={"List Barang"}>
+              <Menu.Item key="/list/brand-motor">
                 <NavLink to="/list/brand-motor">Daftar Brand Motor</NavLink>
               </Menu.Item>
-              <Menu.Item key="4">
+              <Menu.Item key="/list/product">
                 <NavLink to="/list/product">Daftar Product</NavLink>
               </Menu.Item>
-              <Menu.Item key="5">
+              <Menu.Item key="/list/transactions">
                 <NavLink to="/list/transactions">Daftar Transaksi</NavLink>
               </Menu.Item>
             </Menu.SubMenu>
