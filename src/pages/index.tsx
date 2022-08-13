@@ -38,7 +38,7 @@ function HomePage() {
         <Col span={8}>
           <Card>
             <Statistic
-              title="On Going"
+              title="Failed"
               value={93}
               valueStyle={{ color: "#cf1322" }}
               suffix="Transactions"
@@ -48,7 +48,7 @@ function HomePage() {
         <Col span={8}>
           <Card>
             <Statistic
-              title="Pending"
+              title="On Going"
               value={903}
               valueStyle={{ color: "#FAA21B" }}
               suffix="Transactions"

@@ -56,7 +56,7 @@ const ChartEl = memo((props: Props) => {
           {
             label: "Success",
             backgroundColor: "#73d13d",
-            borderColor: "#73d13d",
+            borderColor: "#3f8600",
             data: props.options?.success,
             fill: false,
           },
