@@ -11,8 +11,7 @@ interface Props {
 }
 
 async function initial(setLoading: any) {
-  if (Cookies.get("ocbc.open.api.token") && Cookies.get("wob.anom.token"))
-    return;
+  if (Cookies.get("semesta.token") && Cookies.get("semesta.anom.token")) return;
   try {
     await getAnomToken();
     setLoading(false);

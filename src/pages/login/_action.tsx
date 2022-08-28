@@ -12,7 +12,7 @@ export function useAction() {
     localStorage.clear();
 
     const payload = {
-      email: data?.email,
+      username: data?.username,
       password: data?.password,
     };
     try {

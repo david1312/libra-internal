@@ -3,6 +3,7 @@ import withUnProtectedPage from "@/components/hocs/withUnProctectedPage";
 import { Button, Card, Form, Input, Layout } from "antd";
 import { useAction } from "./_action";
 import Logo from "@/assets/logo.png";
+import { CopyrightOutlined } from "@ant-design/icons";
 
 function LoginPage() {
   const { onFinish, loading } = useAction();
@@ -27,16 +28,15 @@ function LoginPage() {
             >
               <img width={240} height={240} alt={"Logo"} src={Logo} />
             </span>
-
             <Form onFinish={onFinish}>
               Username
               <Form.Item
-                name="email"
+                name="username"
                 rules={[
-                  { required: true, message: "Please input your Email!" },
+                  { required: true, message: "Please input your Username!" },
                 ]}
               >
-                <Input type="email" />
+                <Input type="text" />
               </Form.Item>
               Password
               <Form.Item
@@ -61,6 +61,15 @@ function LoginPage() {
                 </Button>
               </Form.Item>
             </Form>
+            <span
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                color: "#FAA21B",
+              }}
+            >
+              <CopyrightOutlined /> &nbsp; PT. LIBRA CORPORINDO INVESTAMA
+            </span>
           </Card>
         </Layout.Content>
       </Layout>

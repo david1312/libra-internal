@@ -39,15 +39,16 @@ const LayoutComponent = (props: any) => {
           <div className="flex">
             <div className="flex flex-col items-end">
               <p className="mx-4 my-0 leading-normal">
-                {profile?.name} / {profile?.email}
+                {profile?.outlet_name} / {profile?.outlet_email}
               </p>
               <p className="mx-4 my-0 leading-normal italic">
-                <span className="text-blue-500">CUSTOMER ID: </span>
-                {profile?.cust_id}
+                <span className="text-blue-500">ADDRESS: </span>
+                {profile?.outlet_address}
               </p>
             </div>
             <div>
               <Avatar
+                src={profile?.outlet_avatar || ""}
                 icon={<UserOutlined />}
                 size={50}
                 shape="circle"

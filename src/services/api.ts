@@ -47,9 +47,9 @@ api.interceptors.response.use(
     return response;
   },
   function (error) {
-    if (error.response.status === 401) {
-      window.location.replace("/logout");
-    }
+    // if (error.response.status === 401) {
+    //   window.location.replace("/logout");
+    // }
     notification.error({
       message: "Something Went Wrong!",
       description: JSON.stringify(error.response.data.message), // TODO: mapping error mengikuti BE

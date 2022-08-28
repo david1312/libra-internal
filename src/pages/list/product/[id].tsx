@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { Breadcrumb, Card, Divider, Spin } from "antd";
+import { Breadcrumb, Card, Divider, Image, Spin } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import { getDetailProduct, getListProduct } from "@/services/product";
 
@@ -27,39 +27,53 @@ const DetailProduct = () => {
         <table style={{ width: "100%" }}>
           <tr>
             <td colSpan={2}>
-              <p className="m-0 text-[#a70000] font-bold">Detail Product</p>
+              <h2 className="m-0 text-[#a70000] font-bold">Detail Product</h2>
             </td>
           </tr>
           <tr>
-            <td>Nama Barang</td>
+            <td className="m-0 text-[#000] font-bold">Nama Barang</td>
             <td>: {detailProduct?.nama_barang}</td>
           </tr>
           <tr>
-            <td>Ukuran</td>
+            <td className="m-0 text-[#000] font-bold">Ukuran</td>
             <td>: {detailProduct?.ukuran}</td>
           </tr>
           <tr>
-            <td>Jenis Ban</td>
+            <td className="m-0 text-[#000] font-bold">Jenis Ban</td>
             <td>: {detailProduct?.jenis_ban}</td>
           </tr>
           <tr>
-            <td>Posisi</td>
+            <td className="m-0 text-[#000] font-bold">Posisi</td>
             <td>: {detailProduct?.posisi}</td>
           </tr>
           <tr>
-            <td>Jenis Motor</td>
+            <td className="m-0 text-[#000] font-bold">Jenis Motor</td>
             <td>: {detailProduct?.jenis_motor}</td>
           </tr>
           <tr>
-            <td>Kompatibilitas</td>
+            <td className="m-0 text-[#000] font-bold">Kompatibilitas</td>
             <td>
               :{" "}
               {detailProduct?.kompatibilitas?.map((e: any) => e.url).join(", ")}
             </td>
           </tr>
           <tr>
-            <td>Produk Terjual</td>
+            <td className="m-0 text-[#000] font-bold">Produk Terjual</td>
             <td>: {detailProduct?.total_terjual}</td>
+          </tr>
+          <tr>
+            <td className="m-0 text-[#000] font-bold">Gambar Produk</td>
+            <td>:</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              {detailProduct?.image_list?.map((e: any) => (
+                <>
+                  <Image src={e?.url} width="250px" />
+                </>
+              ))}
+            </td>
           </tr>
         </table>
       </Card>
