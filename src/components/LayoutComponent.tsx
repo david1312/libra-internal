@@ -1,7 +1,8 @@
+import { useState } from "react";
 import moment from "moment";
 import { useRecoilValue } from "recoil";
 import { NavLink, useLocation } from "react-router-dom";
-import { Avatar, Button, Layout, Menu, Tooltip } from "antd";
+import { Avatar, Button, Layout, Menu, Modal, Card } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import useStorage from "@/hooks/useStorage";
 import Logo from "@/assets/logo.png";
@@ -10,10 +11,12 @@ const { Header, Content, Sider } = Layout;
 
 const LayoutComponent = (props: any) => {
   const { set, get } = useStorage();
+  const { Meta } = Card;
 
   const location = useLocation();
   const selectedKeys = [location.pathname];
   const openKeys = "/" + location.pathname.split("/").slice(1, -1).join("/");
+  const [detail, setDetail] = useState(false);
 
   const profile = get("profile", []);
 
@@ -46,14 +49,20 @@ const LayoutComponent = (props: any) => {
                 {profile?.outlet_address}
               </p>
             </div>
-            <div>
-              <Avatar
-                src={profile?.outlet_avatar || ""}
-                icon={<UserOutlined />}
-                size={50}
-                shape="circle"
-                style={{ margin: 10 }}
-              />
+            <div
+              onClick={() => {
+                setDetail(true);
+              }}
+            >
+              <abbr title="Detail Merchant" style={{ cursor: "pointer" }}>
+                <Avatar
+                  src={profile?.outlet_avatar || ""}
+                  icon={<UserOutlined />}
+                  size={50}
+                  shape="circle"
+                  style={{ margin: 10 }}
+                />
+              </abbr>
             </div>
           </div>
         </div>
@@ -138,6 +147,48 @@ const LayoutComponent = (props: any) => {
           </Content>
         </Layout>
       </Layout>
+      <Modal
+        title="Detail Merchant"
+        visible={detail}
+        onCancel={() => setDetail(false)}
+        footer={[
+          <Button key="back" onClick={() => setDetail(false)}>
+            Close
+          </Button>,
+          <Button key="submit" type="primary" onClick={() => setDetail(false)}>
+            Edit
+          </Button>,
+        ]}
+      >
+        <Card
+          style={{ width: 450 }}
+          bordered={false}
+          className="profile-card text-left"
+        >
+          <Meta
+            avatar={
+              <Avatar
+                src={profile?.outlet_avatar}
+                size={100}
+                shape="circle"
+                style={{ margin: 10 }}
+              />
+            }
+            description={
+              <div className="mt-3">
+                <p className="m-0 text-[#a70000] font-bold">
+                  OUTLET {profile?.outlet_name}
+                </p>
+                <p className="m-0 text-black font-bold">
+                  {profile?.outlet_address} / {profile?.outlet_city}
+                </p>
+                <p className="m-0 text-black">{profile?.outlet_email}</p>
+                <p className="m-0 text-black">{profile?.outlet_cs_number}</p>
+              </div>
+            }
+          />
+        </Card>
+      </Modal>
     </Layout>
   );
 };
