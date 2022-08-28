@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { Breadcrumb, Button, Card, Divider, Select, Tooltip } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Divider,
+  Image,
+  Select,
+  Tooltip,
+} from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getListProduct } from "@/services/product";
-import Icon, { EyeOutlined } from "@ant-design/icons";
+import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const ListProduct = () => {
   const [listProduct, setListProduct] = useState<any>([]);
@@ -44,7 +52,7 @@ const ListProduct = () => {
       align: "center",
       render: (_: any, record: any) => (
         <>
-          <img width="81px" src={record?.display_image}></img>
+          <Image width="81px" src={record?.display_image} />
         </>
       ),
     },
@@ -55,7 +63,7 @@ const ListProduct = () => {
       align: "center",
       render: (_: any, record: any) => (
         <>
-          <Tooltip title="Detail">
+          <Tooltip title="Detail" color={"#FAA21B"}>
             <Button
               onClick={() => {
                 navigate("/list/product/" + record?.id);
@@ -63,6 +71,16 @@ const ListProduct = () => {
               icon={<EyeOutlined />}
               shape="circle"
               type="primary"
+            />
+          </Tooltip>
+          &nbsp;
+          <Tooltip title="Delete" color="red">
+            <Button
+              onClick={() => {}}
+              icon={<DeleteOutlined />}
+              shape="circle"
+              type="primary"
+              danger
             />
           </Tooltip>
         </>

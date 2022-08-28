@@ -59,3 +59,8 @@ body {
   background-color: #FAA21B !important;
   border: #FAA21B !important;
 }
+
+.ant-btn-danger {
+  background-color: red !important;
+  border: red !important;
+}
