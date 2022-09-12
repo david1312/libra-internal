@@ -14,7 +14,7 @@ import {
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import {
   addMasterProduct,
-  getMasterBrand,
+  getMasterTireBrand,
   getMasterTireSize,
   getMasterTireType,
 } from "@/services/master";
@@ -48,7 +48,7 @@ const columns = [
 const BrandBan = () => {
   const [form, setForm] = useState<any>({});
   const [loading, setLoading] = useState(false);
-  const { dataMasterBrand } = getMasterBrand();
+  const { dataTireBrand } = getMasterTireBrand();
   const { dataTireType } = getMasterTireType();
   const { dataTireSize } = getMasterTireSize();
 
@@ -143,9 +143,9 @@ const BrandBan = () => {
             <td>
               <Select
                 style={{ width: 350 }}
-                options={(dataMasterBrand || [])?.map((e: any) => ({
-                  value: e.id,
-                  label: e.nama,
+                options={(dataTireBrand || [])?.map((e: any) => ({
+                  value: e.id_merk,
+                  label: e.merk,
                 }))}
                 onChange={(e) =>
                   setForm((prev: any) => ({ ...prev, brand_id: e }))

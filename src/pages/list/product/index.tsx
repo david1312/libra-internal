@@ -99,17 +99,17 @@ const ListProduct = () => {
       id: id,
     };
     try {
-      const response = await deleteProduct(payload);
+      await deleteProduct(payload);
       message.success(`Deleted file successfull.`);
     } catch (error) {
       message.error(`Deleted file failed.`);
     }
   };
 
-  const onFetch = async () => {
+  const onFetch = async (limit?: any, page?: any) => {
     const payload = {
-      name: "",
-      limit: 1000,
+      page: page || 1,
+      limit: limit || 1000,
     };
     try {
       const response = await getListProduct(JSON.stringify(payload));
@@ -157,8 +157,8 @@ const ListProduct = () => {
             no: index + 1,
           }))}
           total={listProduct?.info?.total_record}
-          currentPage={1}
           pagination={true}
+          onChange={(e: any, i: any) => onFetch(i, e)}
         />
       </Card>
     </>

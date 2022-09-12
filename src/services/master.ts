@@ -45,7 +45,7 @@ export function getMasterTireSize() {
   };
 }
 
-export function getMasterTireBranf() {
+export function getMasterTireBrand() {
   const { data, error } = useSWR(ENDPOINT.TIRE_BRAND, apiFetcher);
   return {
     dataTireBrand: data,
