@@ -4,7 +4,7 @@ export enum ENDPOINT {
   LIST_PRODUCT = "/products",
   DETAIL_PRODUCT = "/products/detail",
   PROFILE = "/merchant/me ",
-  LIST_TRANSACTIONS = "/transactions/history",
+  LIST_TRANSACTIONS = "/merchant/transactions/history",
   SUBMIT_TRANSACTIONS = "/transactions/submit",
   UPLOAD_BRAND = "/merchant/master-data/brand-motor/add",
   TIRE_TYPE = "/master-data/tire-type",
@@ -12,4 +12,6 @@ export enum ENDPOINT {
   TIRE_SIZE = "/master-data/tire-size",
   DELETE_PRODUCT = "/merchant/products/delete",
   UPDATE_STATUS_TRANSACTIONS = "/merchant/transactions/update-status",
+  DETAIL_TRANSACTION = "/merchant/transactions/detail",
+  TIRE_BRAND = "/master-data/tire-brand",
 }

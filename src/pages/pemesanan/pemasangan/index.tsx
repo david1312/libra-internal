@@ -1,177 +1,162 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { Breadcrumb, Button, Card, Divider, Select, Tooltip } from "antd";
+import { Breadcrumb, Button, Card, Divider, Tooltip } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
-
-import useTalent from "@/hooks/useStorage";
-import LoadingPage from "@/components/loading/LoadingPage";
-import moment from "moment";
+import { getListTransactions, getTransactions } from "@/services/transactions";
 import {
   FieldTimeOutlined,
   LoadingOutlined,
   CheckCircleOutlined,
   EyeOutlined,
-  DeleteOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 
 const color = (type: any) => {
   let color = "";
   let icon = undefined;
-  let next = "";
-  let nextColor = "";
-  let nextIcon = undefined;
 
   switch (type) {
-    case "Menunggu":
+    case "Menunggu Pembayaran":
       color = "#ff5b00";
       icon = <FieldTimeOutlined />;
-      next = "Proses";
-      nextColor = "#5bc0de";
-      nextIcon = <LoadingOutlined />;
       break;
-    case "Proses":
+
+    case "Menunggu Dipasang":
+      color = "#ffbf00";
+      icon = <FieldTimeOutlined />;
+      break;
+
+    case "Diproses":
       color = "#5bc0de";
       icon = <LoadingOutlined />;
-      next = "Selesai";
-      nextColor = "#22bb33";
-      nextIcon = <CheckCircleOutlined />;
 
       break;
+
+    case "Pesanan Dibatalkan":
+      color = "red";
+      icon = <CloseCircleOutlined />;
+      break;
+
     default:
       color = "#22bb33";
       icon = <CheckCircleOutlined />;
-      next = "Selesai";
-      nextColor = "#22bb33";
-      nextIcon = <CheckCircleOutlined />;
 
       break;
   }
-
   return {
     color,
     icon,
-    next,
-    nextColor,
-    nextIcon,
   };
 };
 
-const columns = [
-  {
-    title: "KODE PEMESANAN",
-    dataIndex: "code",
-    key: "code",
-    align: "center",
-  },
-  {
-    title: "HARI",
-    dataIndex: "day",
-    key: "day",
-    align: "center",
-  },
-  {
-    title: "TANGGAL",
-    dataIndex: "date",
-    key: "date",
-    align: "center",
-  },
-  {
-    title: "LOKASI",
-    dataIndex: "location",
-    key: "location",
-    align: "center",
-  },
-  {
-    title: "STATUS",
-    dataIndex: "status",
-    key: "status",
-    align: "center",
-    render: (_: any, record: any) => (
-      <>
-        <Button
-          style={{
-            background: color(record?.status)?.color,
-            color: "#fff",
-            width: "100%",
-          }}
-          icon={color(record?.status)?.icon}
-        >
-          {record?.status}
-        </Button>
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    key: "action",
-    align: "center",
-    render: (_: any, record: any) => (
-      <>
-        {["Menunggu", "Proses"].includes(record?.status) && (
-          <>
-            <Tooltip
-              title={color(record?.status)?.next}
-              color={color(record?.status)?.nextColor}
-            >
-              <Button
-                onClick={() => {}}
-                icon={color(record?.status)?.nextIcon}
-                shape="circle"
-                style={{
-                  background: color(record?.status)?.nextColor,
-                  color: "#fff",
-                }}
-              />
-            </Tooltip>
-          </>
-        )}
-      </>
-    ),
-  },
-];
+const ListTransactions = () => {
+  const [listTransactions, setListTransactions] = useState<any>([]);
 
-const data = [
-  {
-    code: "SMT-001",
-    day: "Minggu",
-    date: "20-08-2022",
-    location: "Jl. Sukamulja, Cibeunying, Bandung",
-    status: "Menunggu",
-  },
-  {
-    code: "SMT-003",
-    day: "Senin",
-    date: "21-08-2022",
-    location: "Jl. Susu Murni Indah, Cihampeulas, Bandung",
-    status: "Selesai",
-  },
-  {
-    code: "SMT-002",
-    day: "Rabu",
-    date: "23-08-2022",
-    location: "Jl. Bojongsoang, Dayeuhkolot, Bandung",
-    status: "Proses",
-  },
-];
-const EDPPage = () => {
-  const { Option } = Select;
+  //   const { dataTransactions, isLoading } = getTransactions();
+  const navigate = useNavigate();
+
+  const columns = [
+    {
+      title: "No",
+      dataIndex: "no",
+      key: "no",
+    },
+    {
+      title: "INVOICE ID",
+      dataIndex: "invoice_id",
+      key: "invoice_id",
+    },
+    {
+      title: "TOTAL",
+      dataIndex: "total_amount_formatted",
+      key: "total_amount_formatted",
+    },
+    {
+      title: "TANGGAL",
+      dataIndex: "created_at",
+      key: "created_at",
+    },
+    {
+      title: "LOKASI",
+      dataIndex: "outlet_name",
+      key: "outlet_name",
+      align: "center",
+    },
+    {
+      title: "STATUS",
+      dataIndex: "status",
+      key: "status",
+      align: "center",
+      render: (_: any, record: any) => (
+        <>
+          <Button
+            style={{
+              background: color(record?.status)?.color,
+              color: "#fff",
+              width: "100%",
+            }}
+            icon={color(record?.status)?.icon}
+          >
+            {record?.status}
+          </Button>
+        </>
+      ),
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      align: "center",
+      render: (_: any, record: any) => (
+        <>
+          &nbsp;
+          <Tooltip title="Detail" color={"#FAA21B"}>
+            <Button
+              onClick={() => {
+                navigate("/pemesanan/pemasangan/" + record?.invoice_id);
+              }}
+              icon={<EyeOutlined />}
+              shape="circle"
+              type="primary"
+            />
+          </Tooltip>
+        </>
+      ),
+    },
+  ];
 
   const currentPath = useLocation().pathname;
-  let navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState("1");
 
-  const { get } = useTalent();
-  const programs = get("master.executive_dev_enum", []);
+  const onFetch = async (limit?: any, page?: any) => {
+    const payload = {
+      limit: limit || 1000,
+      page: page || 1,
+      trans_status: [
+        "Pesanan Dibatalkan",
+        "Menunggu Pembayaran",
+        "Menunggu Dipasang",
+        "Diproses",
+        "Selesai",
+      ],
+    };
+    try {
+      const response = await getListTransactions(payload);
+      setListTransactions(response.data.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    onFetch();
+  }, []);
 
   return (
     <>
       <Breadcrumb>
         <Breadcrumb.Item>Pemesanan</Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/pemesanan/pemasangan">Pemasangan</NavLink>
+          <NavLink to="/pemesanan/pemasangan">Pemasangan Ban</NavLink>
         </Breadcrumb.Item>
       </Breadcrumb>
       <Divider
@@ -181,13 +166,17 @@ const EDPPage = () => {
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <TableComponent
           columns={columns}
-          data={data}
-          currentPage={parseInt(currentPage)}
+          data={listTransactions?.data?.map((e: any, index: number) => ({
+            ...e,
+            no: index + 1,
+          }))}
+          total={listTransactions?.info?.total_record}
           pagination={true}
+          onChange={(e: any, i: any) => onFetch(i, e)}
         />
       </Card>
     </>
   );
 };
 
-export default withProtectedPage(EDPPage);
+export default withProtectedPage(ListTransactions);

@@ -22,15 +22,13 @@ const TableComponent = (props: {
           !props.pagination
             ? false
             : {
-                defaultPageSize: 20,
-                pageSize: 20,
+                defaultPageSize: 10,
                 total: props.total,
                 defaultCurrent: 1,
                 showTotal: (total: number) => `Total Data: ${total}`,
-
                 current: currentPage,
-                onChange: (page: number) => {
-                  props.onChange(page);
+                onChange: (page: number, size: number) => {
+                  props.onChange(page, size);
                   setCurrentPage(page);
                 },
               }

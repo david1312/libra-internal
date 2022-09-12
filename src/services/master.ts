@@ -45,6 +45,15 @@ export function getMasterTireSize() {
   };
 }
 
+export function getMasterTireBranf() {
+  const { data, error } = useSWR(ENDPOINT.TIRE_BRAND, apiFetcher);
+  return {
+    dataTireBrand: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
+
 export function deleteProduct(data: any) {
   return api.request<void, void>({
     url: ENDPOINT.DELETE_PRODUCT,

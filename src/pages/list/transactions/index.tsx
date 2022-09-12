@@ -4,28 +4,55 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Breadcrumb, Button, Card, Divider, Tooltip } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
-import { getListProduct } from "@/services/product";
-import { EyeOutlined } from "@ant-design/icons";
-import { getListTransactions, getTransactions } from "@/services/transactions";
+import { getListTransactions } from "@/services/transactions";
+import {
+  FieldTimeOutlined,
+  LoadingOutlined,
+  CheckCircleOutlined,
+  EyeOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
+
+const color = (type: any) => {
+  let color = "";
+  let icon = undefined;
+
+  switch (type) {
+    case "Menunggu Pembayaran":
+      color = "#ff5b00";
+      icon = <FieldTimeOutlined />;
+      break;
+
+    case "Menunggu Dipasang":
+      color = "#ffbf00";
+      icon = <FieldTimeOutlined />;
+      break;
+
+    case "Diproses":
+      color = "#5bc0de";
+      icon = <LoadingOutlined />;
+
+      break;
+
+    case "Pesanan Dibatalkan":
+      color = "red";
+      icon = <CloseCircleOutlined />;
+      break;
+
+    default:
+      color = "#22bb33";
+      icon = <CheckCircleOutlined />;
+
+      break;
+  }
+  return {
+    color,
+    icon,
+  };
+};
 
 const ListTransactions = () => {
   const [listTransactions, setListTransactions] = useState<any>([]);
-  const [filter, setFilter] = useState<any>({
-    limit: 10,
-    page: 1,
-    trans_status: [
-      "Menunggu Pembayaran",
-      "Menunggu Konfirmasi",
-      "Menunggu Kedatangan",
-      "Diproses",
-      "Selesai",
-    ],
-    idd_outlet: "",
-    list_product: "",
-    payment_method: "",
-    schedule_date: "",
-    schedule_time: "",
-  });
 
   //   const { dataTransactions, isLoading } = getTransactions();
   const navigate = useNavigate();
@@ -47,9 +74,35 @@ const ListTransactions = () => {
       key: "total_amount_formatted",
     },
     {
-      title: "CREATED AT",
+      title: "TANGGAL",
       dataIndex: "created_at",
       key: "created_at",
+    },
+    {
+      title: "LOKASI",
+      dataIndex: "outlet_name",
+      key: "outlet_name",
+      align: "center",
+    },
+    {
+      title: "STATUS",
+      dataIndex: "status",
+      key: "status",
+      align: "center",
+      render: (_: any, record: any) => (
+        <>
+          <Button
+            style={{
+              background: color(record?.status)?.color,
+              color: "#fff",
+              width: "100%",
+            }}
+            icon={color(record?.status)?.icon}
+          >
+            {record?.status}
+          </Button>
+        </>
+      ),
     },
     {
       title: "Action",
@@ -58,7 +111,17 @@ const ListTransactions = () => {
       align: "center",
       render: (_: any, record: any) => (
         <>
-          <Tooltip title="Detail"></Tooltip>
+          &nbsp;
+          <Tooltip title="Detail" color={"#FAA21B"}>
+            <Button
+              onClick={() => {
+                navigate("/list/transactions/" + record?.invoice_id);
+              }}
+              icon={<EyeOutlined />}
+              shape="circle"
+              type="primary"
+            />
+          </Tooltip>
         </>
       ),
     },
@@ -66,9 +129,17 @@ const ListTransactions = () => {
 
   const currentPath = useLocation().pathname;
 
-  const onFetch = async () => {
+  const onFetch = async (limit?: any, page?: any) => {
     const payload = {
-      limit: 1000,
+      limit: limit || 1000,
+      page: page || 1,
+      trans_status: [
+        "Pesanan Dibatalkan",
+        "Menunggu Pembayaran",
+        "Menunggu Dipasang",
+        "Diproses",
+        "Selesai",
+      ],
     };
     try {
       const response = await getListTransactions(payload);
@@ -95,10 +166,13 @@ const ListTransactions = () => {
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <TableComponent
           columns={columns}
-          data={listTransactions?.data}
+          data={listTransactions?.data?.map((e: any, index: number) => ({
+            ...e,
+            no: index + 1,
+          }))}
           total={listTransactions?.info?.total_record}
-          currentPage={1}
           pagination={true}
+          onChange={(e: any, i: any) => onFetch(i, e)}
         />
       </Card>
     </>
