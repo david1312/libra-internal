@@ -9,6 +9,7 @@ function LogoutPage() {
 
   useEffect(() => {
     Cookies.remove("semesta.token");
+    localStorage.clear();
     navigate("/login");
   }, []);
 

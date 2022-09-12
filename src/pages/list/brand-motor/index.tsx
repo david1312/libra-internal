@@ -68,8 +68,8 @@ const BrandBan = () => {
         <TableComponent
           columns={columns}
           data={dataMasterBrand}
-          currentPage={1}
           pagination={true}
+          onChange={(e: any, i: any) => {}}
         />
       </Card>
     </>
