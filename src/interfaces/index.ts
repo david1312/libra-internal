@@ -4,5 +4,12 @@ export enum ENDPOINT {
   LIST_PRODUCT = "/products",
   DETAIL_PRODUCT = "/products/detail",
   PROFILE = "/merchant/me ",
-  LIST_TRANSACTIONS = "/transactions/submit",
+  LIST_TRANSACTIONS = "/transactions/history",
+  SUBMIT_TRANSACTIONS = "/transactions/submit",
+  UPLOAD_BRAND = "/merchant/master-data/brand-motor/add",
+  TIRE_TYPE = "/master-data/tire-type",
+  UPLOAD_PRODUCT = "/merchant/products/add",
+  TIRE_SIZE = "/master-data/tire-size",
+  DELETE_PRODUCT = "/merchant/products/delete",
+  UPDATE_STATUS_TRANSACTIONS = "/merchant/transactions/update-status",
 }

@@ -7,13 +7,15 @@ import {
   Card,
   Divider,
   Image,
-  Select,
+  message,
   Tooltip,
 } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getListProduct } from "@/services/product";
 import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import { deleteProduct } from "@/services/master";
 
 const ListProduct = () => {
   const [listProduct, setListProduct] = useState<any>([]);
@@ -76,7 +78,9 @@ const ListProduct = () => {
           &nbsp;
           <Tooltip title="Delete" color="red">
             <Button
-              onClick={() => {}}
+              onClick={() => {
+                onDelete(record?.id);
+              }}
               icon={<DeleteOutlined />}
               shape="circle"
               type="primary"
@@ -90,9 +94,22 @@ const ListProduct = () => {
 
   const currentPath = useLocation().pathname;
 
+  const onDelete = async (id: any) => {
+    const payload = {
+      id: id,
+    };
+    try {
+      const response = await deleteProduct(payload);
+      message.success(`Deleted file successfull.`);
+    } catch (error) {
+      message.error(`Deleted file failed.`);
+    }
+  };
+
   const onFetch = async () => {
     const payload = {
       name: "",
+      limit: 1000,
     };
     try {
       const response = await getListProduct(JSON.stringify(payload));
@@ -115,6 +132,22 @@ const ListProduct = () => {
       <Divider
         style={{ backgroundColor: "gray", marginTop: 15, marginBottom: 10 }}
       />
+
+      <table width={"100%"}>
+        <tr>
+          <td>
+            <span style={{ float: "right" }}>
+              <Button
+                icon={<PlusOutlined />}
+                type="primary"
+                onClick={() => navigate(currentPath + "/form  ")}
+              >
+                Add New Product
+              </Button>
+            </span>
+          </td>
+        </tr>
+      </table>
 
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <TableComponent

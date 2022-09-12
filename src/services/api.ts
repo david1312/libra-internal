@@ -28,12 +28,15 @@ api.interceptors.request.use(
     const token =
       Cookies.get("semesta.token") || Cookies.get("semesta.anom.token");
 
+    console.log(window.location.pathname.includes("form"));
     if (!token) return config;
     return {
       ...config,
       headers: {
         ["Authorization"]: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": window.location.pathname.includes("form")
+          ? "multipart/form-data"
+          : "application/json",
       },
     };
   },

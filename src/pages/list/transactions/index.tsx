@@ -6,7 +6,7 @@ import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getListProduct } from "@/services/product";
 import { EyeOutlined } from "@ant-design/icons";
-import { getListTransactions } from "@/services/transactions";
+import { getListTransactions, getTransactions } from "@/services/transactions";
 
 const ListTransactions = () => {
   const [listTransactions, setListTransactions] = useState<any>([]);
@@ -26,6 +26,8 @@ const ListTransactions = () => {
     schedule_date: "",
     schedule_time: "",
   });
+
+  //   const { dataTransactions, isLoading } = getTransactions();
   const navigate = useNavigate();
 
   const columns = [
@@ -64,16 +66,19 @@ const ListTransactions = () => {
 
   const currentPath = useLocation().pathname;
 
-  //   const onFetch = async () => {
-  //     try {
-  //       const response = await getListTransactions(filter);
-  //       setListTransactions(response.data.data);
-  //     } catch (error) {}
-  //   };
+  const onFetch = async () => {
+    const payload = {
+      limit: 1000,
+    };
+    try {
+      const response = await getListTransactions(payload);
+      setListTransactions(response.data.data);
+    } catch (error) {}
+  };
 
-  //   useEffect(() => {
-  //     onFetch();
-  //   }, []);
+  useEffect(() => {
+    onFetch();
+  }, []);
 
   return (
     <>

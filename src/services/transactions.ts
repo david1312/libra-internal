@@ -9,3 +9,12 @@ export async function getListTransactions(payload?: any) {
     method: "POST",
   });
 }
+
+export function getTransactions() {
+  const { data, error } = useSWR(ENDPOINT.LIST_TRANSACTIONS, apiFetcher);
+  return {
+    dataTransactions: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}

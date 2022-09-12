@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { Breadcrumb, Card, Divider } from "antd";
+import { Breadcrumb, Card, Divider, Button } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getMasterBrand } from "@/services/master";
+import { PlusOutlined } from "@ant-design/icons";
 
 const columns = [
   {
@@ -32,6 +33,7 @@ const columns = [
 
 const BrandBan = () => {
   const { dataMasterBrand } = getMasterBrand();
+  const navigate = useNavigate();
 
   const currentPath = useLocation().pathname;
 
@@ -46,6 +48,21 @@ const BrandBan = () => {
       <Divider
         style={{ backgroundColor: "gray", marginTop: 15, marginBottom: 10 }}
       />
+      <table width={"100%"}>
+        <tr>
+          <td>
+            <span style={{ float: "right" }}>
+              <Button
+                icon={<PlusOutlined />}
+                type="primary"
+                onClick={() => navigate(currentPath + "/form  ")}
+              >
+                Add New Brand
+              </Button>
+            </span>
+          </td>
+        </tr>
+      </table>
 
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <TableComponent
