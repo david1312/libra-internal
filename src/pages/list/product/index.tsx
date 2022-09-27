@@ -94,7 +94,7 @@ const ListProduct = () => {
       id: id,
     };
     try {
-      await deleteProduct(payload);
+      await deleteProduct(payload).then(() => onFetch());
       message.success(`Deleted file successfull.`);
     } catch (error) {
       message.error(`Deleted file failed.`);

@@ -3,84 +3,97 @@ import { Breadcrumb, Card, Divider, Button, Tooltip, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getMasterTireBrand, removeMasterTireBrand } from "@/services/master";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-
-const columns = [
-  {
-    title: "NO",
-    dataIndex: "no",
-    key: "no",
-    width: 50,
-  },
-  {
-    title: "ID",
-    dataIndex: "id_merk",
-    key: "id_merk",
-  },
-  {
-    title: "MERK",
-    dataIndex: "merk",
-    key: "merk",
-  },
-  {
-    title: "LOGO",
-    dataIndex: "icon",
-    key: "icon",
-    align: "center",
-    render: (_: any, record: any) => (
-      <>
-        <img width="81px" src={record?.icon}></img>
-      </>
-    ),
-  },
-  ,
-  {
-    title: "Action",
-    dataIndex: "action",
-    key: "action",
-    align: "center",
-    render: (_: any, record: any) => (
-      <>
-        <Tooltip title="Delete" color="red">
-          <Button
-            onClick={() => {
-              onDelete(record?.id_merk);
-            }}
-            icon={<DeleteOutlined />}
-            shape="circle"
-            type="primary"
-            danger
-          />
-        </Tooltip>
-      </>
-    ),
-  },
-];
-
-const onDelete = async (id: any) => {
-  const payload = {
-    id: id,
-  };
-  try {
-    await removeMasterTireBrand(payload);
-    message.success(`Deleted file successfull.`);
-  } catch (error) {
-    message.error(`Deleted file failed.`);
-  }
-};
+import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const BrandBan = () => {
-  const { dataTireBrand } = getMasterTireBrand();
+  const { dataTireBrand, mutateList } = getMasterTireBrand();
   const navigate = useNavigate();
 
   const currentPath = useLocation().pathname;
+
+  const onDelete = async (id: any) => {
+    const payload = {
+      id: id,
+    };
+    try {
+      await removeMasterTireBrand(payload).then(() =>
+        mutateList(dataTireBrand.filter((e: any) => e.id_merk !== id))
+      );
+      message.success(`Deleted file successfull.`);
+    } catch (error) {
+      message.error(`Deleted file failed.`);
+    }
+  };
+
+  const columns = [
+    {
+      title: "NO",
+      dataIndex: "no",
+      key: "no",
+      width: 50,
+    },
+    {
+      title: "ID",
+      dataIndex: "id_merk",
+      key: "id_merk",
+    },
+    {
+      title: "MERK",
+      dataIndex: "merk",
+      key: "merk",
+    },
+    {
+      title: "LOGO",
+      dataIndex: "icon",
+      key: "icon",
+      align: "center",
+      render: (_: any, record: any) => (
+        <>
+          <img width="81px" src={record?.icon}></img>
+        </>
+      ),
+    },
+    ,
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      align: "center",
+      render: (_: any, record: any) => (
+        <>
+          <Tooltip title="Update" color={"#FAA21B"}>
+            <Button
+              onClick={() => {
+                navigate("/list/brand-tire/form/" + record?.id_merk);
+              }}
+              icon={<EditOutlined />}
+              shape="circle"
+              type="primary"
+            />
+          </Tooltip>
+          &nbsp;
+          <Tooltip title="Delete" color="red">
+            <Button
+              onClick={() => {
+                onDelete(record?.id_merk);
+              }}
+              icon={<DeleteOutlined />}
+              shape="circle"
+              type="primary"
+              danger
+            />
+          </Tooltip>
+        </>
+      ),
+    },
+  ];
 
   return (
     <>
       <Breadcrumb>
         <Breadcrumb.Item>List Barang</Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/list/brand-motor">Daftar Brand Motor</NavLink>
+          <NavLink to="/list/brand-motor">Daftar Merk Motor</NavLink>
         </Breadcrumb.Item>
       </Breadcrumb>
       <Divider

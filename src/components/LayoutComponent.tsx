@@ -100,7 +100,7 @@ const LayoutComponent = (props: any) => {
             </Menu.SubMenu>
             <Menu.SubMenu key="/list" title={"List Barang"}>
               <Menu.Item key="/list/brand-motor">
-                <NavLink to="/list/brand-motor">Daftar Brand Motor</NavLink>
+                <NavLink to="/list/brand-motor">Daftar Merk Motor</NavLink>
               </Menu.Item>
               <Menu.Item key="/list/product">
                 <NavLink to="/list/product">Daftar Product</NavLink>

@@ -4,6 +4,12 @@ import Cookies from "js-cookie";
 
 const base = "https://api.sunmorisemestaban.com/v1";
 
+const FORM_DATA = [
+  "/list/brand-tire/form",
+  "/list/product/form",
+  "/list/brand-motor/form",
+];
+
 export const api = axios.create({
   baseURL: base,
 });
@@ -28,13 +34,12 @@ api.interceptors.request.use(
     const token =
       Cookies.get("semesta.token") || Cookies.get("semesta.anom.token");
 
-    console.log(window.location.pathname.includes("form"));
     if (!token) return config;
     return {
       ...config,
       headers: {
         ["Authorization"]: `Bearer ${token}`,
-        "Content-Type": window.location.pathname.includes("form")
+        "Content-Type": FORM_DATA.includes(window.location.pathname)
           ? "multipart/form-data"
           : "application/json",
       },

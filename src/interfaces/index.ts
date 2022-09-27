@@ -16,4 +16,9 @@ export enum ENDPOINT {
   TIRE_BRAND = "/master-data/tire-brand",
   ADD_TIRE_BRAND = "/merchant/master-data/tire-brand/add",
   REMOVE_TIRE_BRAND = "/merchant/master-data/tire-brand/delete",
+  REMOVE_MOTOR_BRAND = "/merchant/master-data/brand-motor/delete",
+  UPDATE_TIRE_BRAND = "/merchant/master-data/tire-brand/update",
+  UPDATE_MOTOR_BRAND = "/merchant/master-data/brand-motor/update",
+  UPDATE_IMAGE_TIRE_BRAND = "/merchant/master-data/tire-brand/update-image",
+  UPDATE_IMAGE_MOTOR_BRAND = "/merchant/master-data/brand-motor/update-image",
 }

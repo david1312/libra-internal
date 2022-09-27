@@ -17,7 +17,6 @@ const ChartEl = memo((props: Props) => {
       chartjs.destroy();
     }
 
-    console.log(props.options);
     const thisWindow: any = window;
     chartjs = new thisWindow.Chart(ref.current);
 

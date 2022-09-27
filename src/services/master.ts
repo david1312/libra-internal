@@ -3,11 +3,12 @@ import useSWR from "swr";
 import { apiFetcher, api } from "./api";
 
 export function getMasterBrand() {
-  const { data, error } = useSWR(ENDPOINT.BRAND_MOTOR, apiFetcher);
+  const { data, error, mutate } = useSWR(ENDPOINT.BRAND_MOTOR, apiFetcher);
   return {
     dataMasterBrand: data,
     isLoading: !error && !data,
     isError: error,
+    mutateList: mutate,
   };
 }
 
@@ -35,12 +36,53 @@ export async function removeMasterTireBrand(file: any) {
   });
 }
 
+export async function updateMasterTireBrand(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.UPDATE_TIRE_BRAND,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function removeMasterMotorBrand(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.REMOVE_MOTOR_BRAND,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function updateMasterMotorBrand(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.UPDATE_MOTOR_BRAND,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function updateIconTireBrand(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.UPDATE_IMAGE_TIRE_BRAND,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function updateIconMotorBrand(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.UPDATE_IMAGE_MOTOR_BRAND,
+    data: file,
+    method: "POST",
+  });
+}
+
 export function getMasterTireType() {
-  const { data, error } = useSWR(ENDPOINT.TIRE_TYPE, apiFetcher);
+  const { data, error, mutate } = useSWR(ENDPOINT.TIRE_TYPE, apiFetcher);
   return {
     dataTireType: data,
     isLoading: !error && !data,
     isError: error,
+    mutateList: mutate,
   };
 }
 
@@ -62,11 +104,12 @@ export function getMasterTireSize() {
 }
 
 export function getMasterTireBrand() {
-  const { data, error } = useSWR(ENDPOINT.TIRE_BRAND, apiFetcher);
+  const { data, error, mutate } = useSWR(ENDPOINT.TIRE_BRAND, apiFetcher);
   return {
     dataTireBrand: data,
     isLoading: !error && !data,
     isError: error,
+    mutateList: mutate,
   };
 }
 
