@@ -4,7 +4,12 @@ import { Breadcrumb, Card, Divider, Button, Tooltip, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getMasterBrand, removeMasterMotorBrand } from "@/services/master";
-import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  FileImageOutlined,
+} from "@ant-design/icons";
 
 const BrandBan = () => {
   const { dataMasterBrand, mutateList } = getMasterBrand();
@@ -63,6 +68,17 @@ const BrandBan = () => {
                 navigate("/list/brand-motor/form/" + record?.id);
               }}
               icon={<EditOutlined />}
+              shape="circle"
+              type="primary"
+            />
+          </Tooltip>
+          &nbsp;
+          <Tooltip title="Change Image" color={"#FAA21B"}>
+            <Button
+              onClick={() => {
+                navigate("/list/brand-motor/form/update-icon/" + record?.id);
+              }}
+              icon={<FileImageOutlined />}
               shape="circle"
               type="primary"
             />

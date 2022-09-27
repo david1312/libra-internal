@@ -8,6 +8,8 @@ const FORM_DATA = [
   "/list/brand-tire/form",
   "/list/product/form",
   "/list/brand-motor/form",
+  "/list/brand-tire/form/update-icon/:id",
+  "/list/brand-motor/form/update-icon/:id",
 ];
 
 export const api = axios.create({

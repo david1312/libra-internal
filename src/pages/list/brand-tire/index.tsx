@@ -3,7 +3,12 @@ import { Breadcrumb, Card, Divider, Button, Tooltip, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getMasterTireBrand, removeMasterTireBrand } from "@/services/master";
-import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  FileImageOutlined,
+} from "@ant-design/icons";
 
 const BrandBan = () => {
   const { dataTireBrand, mutateList } = getMasterTireBrand();
@@ -67,6 +72,19 @@ const BrandBan = () => {
                 navigate("/list/brand-tire/form/" + record?.id_merk);
               }}
               icon={<EditOutlined />}
+              shape="circle"
+              type="primary"
+            />
+          </Tooltip>
+          &nbsp;
+          <Tooltip title="Change Image" color={"#FAA21B"}>
+            <Button
+              onClick={() => {
+                navigate(
+                  "/list/brand-tire/form/update-icon/" + record?.id_merk
+                );
+              }}
+              icon={<FileImageOutlined />}
               shape="circle"
               type="primary"
             />
