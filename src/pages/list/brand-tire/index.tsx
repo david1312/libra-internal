@@ -1,22 +1,26 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-
-import { Breadcrumb, Card, Divider, Button } from "antd";
+import { Breadcrumb, Card, Divider, Button, Tooltip, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
-import { getMasterBrand } from "@/services/master";
-import { PlusOutlined } from "@ant-design/icons";
+import { getMasterTireBrand, removeMasterTireBrand } from "@/services/master";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const columns = [
   {
-    title: "ID",
-    dataIndex: "id",
-    key: "id",
+    title: "NO",
+    dataIndex: "no",
+    key: "no",
     width: 50,
   },
   {
-    title: "NAME",
-    dataIndex: "nama",
-    key: "nama",
+    title: "ID",
+    dataIndex: "id_merk",
+    key: "id_merk",
+  },
+  {
+    title: "MERK",
+    dataIndex: "merk",
+    key: "merk",
   },
   {
     title: "LOGO",
@@ -29,10 +33,44 @@ const columns = [
       </>
     ),
   },
+  ,
+  {
+    title: "Action",
+    dataIndex: "action",
+    key: "action",
+    align: "center",
+    render: (_: any, record: any) => (
+      <>
+        <Tooltip title="Delete" color="red">
+          <Button
+            onClick={() => {
+              onDelete(record?.id_merk);
+            }}
+            icon={<DeleteOutlined />}
+            shape="circle"
+            type="primary"
+            danger
+          />
+        </Tooltip>
+      </>
+    ),
+  },
 ];
 
+const onDelete = async (id: any) => {
+  const payload = {
+    id: id,
+  };
+  try {
+    await removeMasterTireBrand(payload);
+    message.success(`Deleted file successfull.`);
+  } catch (error) {
+    message.error(`Deleted file failed.`);
+  }
+};
+
 const BrandBan = () => {
-  const { dataMasterBrand } = getMasterBrand();
+  const { dataTireBrand } = getMasterTireBrand();
   const navigate = useNavigate();
 
   const currentPath = useLocation().pathname;
@@ -67,7 +105,10 @@ const BrandBan = () => {
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <TableComponent
           columns={columns}
-          data={dataMasterBrand}
+          data={dataTireBrand?.map((e: any, i: number) => ({
+            ...e,
+            no: i + 1,
+          }))}
           pagination={true}
           onChange={(e: any, i: any) => {}}
         />

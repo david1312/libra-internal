@@ -108,6 +108,12 @@ const LayoutComponent = (props: any) => {
               <Menu.Item key="/list/transactions">
                 <NavLink to="/list/transactions">Daftar Transaksi</NavLink>
               </Menu.Item>
+              <Menu.Item key="/list/brand-tire">
+                <NavLink to="/list/brand-tire">Daftar Merk Ban</NavLink>
+              </Menu.Item>
+              <Menu.Item key="/list/size-tire">
+                <NavLink to="/list/size-tire">Daftar Ukuran Ban</NavLink>
+              </Menu.Item>
             </Menu.SubMenu>
             <div>
               <span

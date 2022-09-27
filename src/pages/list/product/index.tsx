@@ -23,11 +23,6 @@ const ListProduct = () => {
 
   const columns = [
     {
-      title: "No",
-      dataIndex: "no",
-      key: "no",
-    },
-    {
       title: "NAME",
       dataIndex: "nama_barang",
       key: "nama",
@@ -152,10 +147,7 @@ const ListProduct = () => {
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <TableComponent
           columns={columns}
-          data={listProduct?.data?.map((e: any, index: number) => ({
-            ...e,
-            no: index + 1,
-          }))}
+          data={listProduct?.data}
           total={listProduct?.info?.total_record}
           pagination={true}
           onChange={(e: any, i: any) => onFetch(i, e)}

@@ -19,6 +19,22 @@ export async function addMasterBrand(file: any) {
   });
 }
 
+export async function addMasterTireBrand(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.ADD_TIRE_BRAND,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function removeMasterTireBrand(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.REMOVE_TIRE_BRAND,
+    data: file,
+    method: "POST",
+  });
+}
+
 export function getMasterTireType() {
   const { data, error } = useSWR(ENDPOINT.TIRE_TYPE, apiFetcher);
   return {

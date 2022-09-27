@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { Breadcrumb, Button, Card, Divider, Input, message } from "antd";
+import { Breadcrumb, Button, Card, Divider, Form, Input, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
-import { addMasterBrand } from "@/services/master";
+import { addMasterBrand, addMasterTireBrand } from "@/services/master";
 import FileUploader from "@/components/FileUploader";
 import _isEmpty from "lodash/isEmpty";
 
@@ -40,12 +40,15 @@ const BrandBan = () => {
     setLoading(true);
     try {
       let data = new FormData();
+      data.append("id", form?.id);
       data.append("name", form?.name);
+      data.append("ranking", form?.ranking);
+
       form?.data?.map((e: any) => {
         data.append("icon", e.originFileObj);
       });
-      await addMasterBrand(data).then(() => {
-        navigate("/list/brand-motor");
+      await addMasterTireBrand(data).then(() => {
+        navigate("/list/brand-tire");
         setLoading(false);
       });
     } catch (error) {
@@ -69,9 +72,28 @@ const BrandBan = () => {
       />
 
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
-        <h2 className="m-0 text-[#000] font-bold">Add Brand Motor</h2>
+        <h2 className="m-0 text-[#000] font-bold">Add Merk Ban</h2>
         <br />
         <table width={"100%"} cellPadding={8}>
+          <tr>
+            <td>
+              <span>
+                <span className="text-red-500">* </span>
+                ID Brand
+              </span>
+            </td>
+            <td>:</td>
+            <td>
+              <Input
+                style={{ width: 350 }}
+                onChange={(e) =>
+                  setForm((prev: any) => ({ ...prev, id: e.target.value }))
+                }
+                disabled={loading}
+                placeholder="Masukkan id brand"
+              />
+            </td>
+          </tr>
           <tr>
             <td>
               <span>
@@ -83,9 +105,31 @@ const BrandBan = () => {
             <td>
               <Input
                 style={{ width: 350 }}
-                onChange={(e) => setForm({ name: e.target.value })}
+                onChange={(e) =>
+                  setForm((prev: any) => ({ ...prev, name: e.target.value }))
+                }
                 disabled={loading}
                 placeholder="Masukkan nama brand"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>
+                <span className="text-red-500">* </span>
+                Ranking
+              </span>
+            </td>
+            <td>:</td>
+            <td>
+              <Input
+                style={{ width: 350 }}
+                onChange={(e) =>
+                  setForm((prev: any) => ({ ...prev, ranking: e.target.value }))
+                }
+                disabled={loading}
+                placeholder="Masukkan ranking brand"
+                type="number"
               />
             </td>
           </tr>

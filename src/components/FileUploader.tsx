@@ -4,7 +4,7 @@ import { Button, message, notification, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import _ from "lodash";
 
-const FileUploader = ({ onData, disabled }: any) => {
+const FileUploader = ({ onData, disabled, multiple }: any) => {
   const [fileList, setFileList] = useState<any>([]);
   const [loading, setLoading] = useState(false);
 
@@ -14,7 +14,6 @@ const FileUploader = ({ onData, disabled }: any) => {
       fileList.map(async (e: any) => {
         if (e.originFileObj.size <= 1000000) {
           try {
-            onData(e);
             setLoading(false);
             message.success(`${e.name} file added`);
           } catch (error) {
@@ -28,7 +27,9 @@ const FileUploader = ({ onData, disabled }: any) => {
           });
         }
       });
+      onData(fileList);
     }
+
     if (fileList.length > 0) {
       upload();
     }
@@ -43,11 +44,10 @@ const FileUploader = ({ onData, disabled }: any) => {
         name="document"
         accept={fileType}
         fileList={fileList}
+        multiple={multiple}
         onRemove={() => {
           setFileList([]);
         }}
-        multiple={false}
-        maxCount={1}
         beforeUpload={() => {
           return false;
         }}
@@ -56,7 +56,7 @@ const FileUploader = ({ onData, disabled }: any) => {
         }}
         disabled={disabled}
       >
-        {fileList?.length < 1 && (
+        {((fileList?.length < 1 && !multiple) || multiple) && (
           <>
             <Button icon={<UploadOutlined />} loading={loading}>
               Click to Upload **

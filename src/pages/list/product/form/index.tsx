@@ -6,7 +6,6 @@ import {
   Button,
   Card,
   Divider,
-  Form,
   Input,
   message,
   Select,
@@ -66,7 +65,10 @@ const BrandBan = () => {
       data.append("price", form?.price);
       data.append("stock", form?.stock);
       data.append("description", form?.description);
-      data.append("photos", form?.data.originFileObj);
+
+      form?.data?.map((e: any) => {
+        data.append("photos", e.originFileObj);
+      });
       await addMasterProduct(data).then(() => {
         navigate("/list/product");
         setLoading(false);
@@ -306,6 +308,7 @@ const BrandBan = () => {
                   setForm((prev: any) => ({ ...prev, data: data }))
                 }
                 disabled={loading}
+                multiple={true}
               />
             </td>
           </tr>

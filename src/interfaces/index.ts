@@ -14,4 +14,6 @@ export enum ENDPOINT {
   UPDATE_STATUS_TRANSACTIONS = "/merchant/transactions/update-status",
   DETAIL_TRANSACTION = "/merchant/transactions/detail",
   TIRE_BRAND = "/master-data/tire-brand",
+  ADD_TIRE_BRAND = "/merchant/master-data/tire-brand/add",
+  REMOVE_TIRE_BRAND = "/merchant/master-data/tire-brand/delete",
 }
