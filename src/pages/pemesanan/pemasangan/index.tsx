@@ -138,6 +138,7 @@ const ListTransactions = () => {
         "Menunggu Pembayaran",
         "Menunggu Dipasang",
         "Diproses",
+        "Berhasil",
         "Selesai",
       ],
     };
