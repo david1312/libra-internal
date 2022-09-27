@@ -48,7 +48,7 @@ const BrandBan = () => {
         data.append("icon", e.originFileObj);
       });
       await updateIconMotorBrand(data).then(() => {
-        navigate("/list/brand-tire");
+        navigate("/list/brand-motor");
         setLoading(false);
       });
     } catch (error) {
