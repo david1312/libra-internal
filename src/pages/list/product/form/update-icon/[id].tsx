@@ -49,7 +49,7 @@ const BrandBan = () => {
       />
 
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
-        <h2 className="m-0 text-[#000] font-bold">Update Icon </h2>
+        <h2 className="m-0 text-[#000] font-bold">Update Image </h2>
         <Image src={hash?.url} width="250px" />
         <br />
         <table width={"100%"} cellPadding={8}>
