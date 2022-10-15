@@ -13,7 +13,7 @@ import {
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getListProduct } from "@/services/product";
-import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EyeOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
 import { deleteProduct } from "@/services/master";
 
@@ -66,6 +66,17 @@ const ListProduct = () => {
                 navigate("/list/product/" + record?.id);
               }}
               icon={<EyeOutlined />}
+              shape="circle"
+              type="primary"
+            />
+          </Tooltip>
+          &nbsp;
+          <Tooltip title="Edit Product" color={"#FAA21B"}>
+            <Button
+              onClick={() => {
+                navigate("/list/product/form/" + record?.id);
+              }}
+              icon={<EditOutlined />}
               shape="circle"
               type="primary"
             />
@@ -143,7 +154,6 @@ const ListProduct = () => {
           </td>
         </tr>
       </table>
-
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <TableComponent
           columns={columns}

@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 
-import { Breadcrumb, Button, Card, Divider, Input, message } from "antd";
+import { Breadcrumb, Button, Card, Divider, Image, Input, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
-import { getMasterTireBrand, updateIconTireBrand } from "@/services/master";
 import _isEmpty from "lodash/isEmpty";
 import FileUploader from "@/components/FileUploader";
+import { imageProduct } from "@/services/product";
+import qs from "qs";
 
 const BrandBan = () => {
-  const params = useParams();
-  const { dataTireBrand, mutateList } = getMasterTireBrand();
+  const params: any = useParams();
+  const hash: any = qs.parse(window.location.hash.slice(1));
   const [form, setForm] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -18,14 +19,13 @@ const BrandBan = () => {
     setLoading(true);
     try {
       let data = new FormData();
-      data.append("id", form?.id);
+      data.append("id", params?.id);
 
       form?.data?.map((e: any) => {
         data.append("icon", e.originFileObj);
       });
-      await updateIconTireBrand(data).then(() => {
-        mutateList();
-        navigate("/list/brand-tire");
+      await imageProduct("UPDATE", data).then(() => {
+        navigate("/list/product/" + hash?.id);
         setLoading(false);
       });
     } catch (error) {
@@ -33,22 +33,15 @@ const BrandBan = () => {
     }
   };
 
-  useEffect(() => {
-    if (dataTireBrand) {
-      const data = dataTireBrand.find((e: any) => e.id_merk === params?.id);
-      setForm({ id: data?.id_merk, name: data?.merk });
-    }
-  }, []);
-
   return (
     <>
       <Breadcrumb>
         <Breadcrumb.Item>List Barang</Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/list/brand-motor">Daftar Brand Motor</NavLink>
+          <NavLink to="/list/product">Daftar Product</NavLink>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/list/brand-motor/form">Form</NavLink>
+          <NavLink to="/list/product/form">Form</NavLink>
         </Breadcrumb.Item>
       </Breadcrumb>
       <Divider
@@ -56,26 +49,10 @@ const BrandBan = () => {
       />
 
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
-        <h2 className="m-0 text-[#000] font-bold">Update Icon {params?.id} </h2>
+        <h2 className="m-0 text-[#000] font-bold">Update Icon </h2>
+        <Image src={hash?.url} width="250px" />
         <br />
         <table width={"100%"} cellPadding={8}>
-          <tr>
-            <td>
-              <span>
-                <span className="text-red-500">* </span>
-                ID Brand
-              </span>
-            </td>
-            <td>:</td>
-            <td>
-              <Input
-                style={{ width: 350 }}
-                disabled={true}
-                value={form?.id}
-                placeholder="Masukkan id brand"
-              />
-            </td>
-          </tr>
           <tr>
             <td>
               <span>
@@ -102,7 +79,7 @@ const BrandBan = () => {
                   onClick={handleSubmit}
                   type="primary"
                   loading={loading}
-                  disabled={_isEmpty(form?.name) && _isEmpty(form?.data)}
+                  disabled={_isEmpty(form?.data)}
                 >
                   Submit
                 </Button>

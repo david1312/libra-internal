@@ -120,3 +120,56 @@ export function deleteProduct(data: any) {
     data: JSON.stringify(data),
   });
 }
+
+export async function addMasterMotor(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.ADD_MOTOR,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function getListMotors(payload?: any) {
+  return await api.request<any, any>({
+    url: ENDPOINT.LIST_MOTORS,
+    data: payload,
+    method: "POST",
+  });
+}
+
+export async function removeMasterMotors(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.REMOVE_MOTOR,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function updateMasterMotor(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.UPDATE_MOTOR,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function updateIconMotor(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.UPDATE_IMAGE_MOTOR,
+    data: file,
+    method: "POST",
+  });
+}
+
+export function getMasterCategoryMotors() {
+  const { data, error, mutate } = useSWR(
+    ENDPOINT.LIST_CATEGORY_MOTOR,
+    apiFetcher
+  );
+  return {
+    dataMasterCategory: data,
+    isLoading: !error && !data,
+    isError: error,
+    mutateList: mutate,
+  };
+}

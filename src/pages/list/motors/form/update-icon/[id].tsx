@@ -3,16 +3,66 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 import { Breadcrumb, Button, Card, Divider, Input, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
-import { getMasterTireBrand, updateIconTireBrand } from "@/services/master";
+import { getListMotors, updateIconMotor } from "@/services/master";
 import _isEmpty from "lodash/isEmpty";
 import FileUploader from "@/components/FileUploader";
 
+const columns = [
+  {
+    title: "ID",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
+    title: "NAME",
+    dataIndex: "nama",
+    key: "nama",
+  },
+  {
+    title: "LOGO",
+    dataIndex: "icon",
+    key: "icon",
+    align: "center",
+    render: (_: any, record: any) => (
+      <>
+        <img width="81px" src={record?.icon}></img>
+      </>
+    ),
+  },
+];
+
 const BrandBan = () => {
   const params = useParams();
-  const { dataTireBrand, mutateList } = getMasterTireBrand();
   const [form, setForm] = useState<any>({});
+  const [listMotors, setListMotors] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const onFetch = async (limit?: any, page?: any) => {
+    const payload = {
+      page: page || 1,
+      limit: limit || 1000,
+    };
+    try {
+      const response = await getListMotors(JSON.stringify(payload));
+      setListMotors(response.data.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    onFetch();
+  }, []);
+
+  useEffect(() => {
+    if (listMotors) {
+      const data = listMotors?.data?.find(
+        (e: any) => e.id === Number(params?.id)
+      );
+      setForm({
+        id: data?.id,
+      });
+    }
+  }, [listMotors]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -23,9 +73,8 @@ const BrandBan = () => {
       form?.data?.map((e: any) => {
         data.append("icon", e.originFileObj);
       });
-      await updateIconTireBrand(data).then(() => {
-        mutateList();
-        navigate("/list/brand-tire");
+      await updateIconMotor(data).then(() => {
+        navigate("/list/motors");
         setLoading(false);
       });
     } catch (error) {
@@ -33,22 +82,15 @@ const BrandBan = () => {
     }
   };
 
-  useEffect(() => {
-    if (dataTireBrand) {
-      const data = dataTireBrand.find((e: any) => e.id_merk === params?.id);
-      setForm({ id: data?.id_merk, name: data?.merk });
-    }
-  }, []);
-
   return (
     <>
       <Breadcrumb>
         <Breadcrumb.Item>List Barang</Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/list/brand-motor">Daftar Brand Motor</NavLink>
+          <NavLink to="/list/motors">Daftar Varian Motor</NavLink>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/list/brand-motor/form">Form</NavLink>
+          <NavLink to="/list/motors/form">Form</NavLink>
         </Breadcrumb.Item>
       </Breadcrumb>
       <Divider
@@ -56,14 +98,14 @@ const BrandBan = () => {
       />
 
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
-        <h2 className="m-0 text-[#000] font-bold">Update Icon {params?.id} </h2>
+        <h2 className="m-0 text-[#000] font-bold">Update Icon </h2>
         <br />
         <table width={"100%"} cellPadding={8}>
           <tr>
             <td>
               <span>
                 <span className="text-red-500">* </span>
-                ID Brand
+                ID Motor
               </span>
             </td>
             <td>:</td>
@@ -102,7 +144,7 @@ const BrandBan = () => {
                   onClick={handleSubmit}
                   type="primary"
                   loading={loading}
-                  disabled={_isEmpty(form?.name) && _isEmpty(form?.data)}
+                  disabled={_isEmpty(form?.id) && _isEmpty(form?.data)}
                 >
                   Submit
                 </Button>

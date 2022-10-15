@@ -11,7 +11,7 @@ export async function getListProduct(payload?: any) {
 }
 
 export function getDetailProduct(id: any) {
-  const { data, error } = useSWR(
+  const { data, error, mutate } = useSWR(
     `${ENDPOINT.DETAIL_PRODUCT}?id=${id}`,
     apiFetcher
   );
@@ -19,5 +19,36 @@ export function getDetailProduct(id: any) {
     detailProduct: data,
     isLoading: !error && !data,
     isError: error,
+    mutateList: mutate,
   };
+}
+
+export async function updateProduct(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.UPDATE_PRODUCT,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function imageProduct(type: any, file: any) {
+  var urlType = ENDPOINT.ADD_IMAGE_PRODUCT;
+
+  switch (type) {
+    case "UPDATE":
+      urlType = ENDPOINT.UPDATE_IMAGE_MOTOR;
+      break;
+    case "DELETE":
+      urlType = ENDPOINT.DELETE_IMAGE_PRODUCT;
+      break;
+    default:
+      urlType = ENDPOINT.ADD_IMAGE_PRODUCT;
+      break;
+  }
+
+  return await api.request<void, void>({
+    url: urlType,
+    data: file,
+    method: "POST",
+  });
 }

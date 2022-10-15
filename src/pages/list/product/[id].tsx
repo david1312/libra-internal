@@ -1,15 +1,66 @@
-import { useEffect, useState } from "react";
-import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
-import { Breadcrumb, Card, Divider, Image, Spin } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Divider,
+  Image,
+  message,
+  Spin,
+  Tooltip,
+} from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
-import { getDetailProduct, getListProduct } from "@/services/product";
+import { getDetailProduct, imageProduct } from "@/services/product";
+import FileUploader from "@/components/FileUploader";
+import _isEmpty from "lodash/isEmpty";
+import { DeleteOutlined, FileImageOutlined } from "@ant-design/icons";
 
 const DetailProduct = () => {
   const params = useParams();
-  const { detailProduct, isLoading } = getDetailProduct(params?.id);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState<any>({});
+  const { detailProduct, isLoading, mutateList } = getDetailProduct(params?.id);
 
-  if (isLoading) return <Spin />;
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      let data = new FormData();
+      data.append("id", detailProduct?.id);
+
+      form?.data?.map((e: any) => {
+        data.append("icon", e.originFileObj);
+      });
+      await imageProduct("ADD", data).then(() => {
+        mutateList();
+        setLoading(false);
+      });
+    } catch (error) {
+      setLoading(false);
+      message.error(`${form?.data.name} file failed.`);
+    }
+  };
+
+  const onDelete = async (id: any) => {
+    setLoading(true);
+    const payload = {
+      id: id,
+    };
+    try {
+      await imageProduct("DELETE", payload).then(() => {
+        mutateList();
+        setLoading(false);
+      });
+      message.success(`Deleted file successfull.`);
+    } catch (error) {
+      setLoading(false);
+      message.error(`Deleted file failed.`);
+    }
+  };
+
+  if (isLoading || loading) return <Spin />;
   return (
     <>
       <Breadcrumb>
@@ -26,7 +77,7 @@ const DetailProduct = () => {
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <table style={{ width: "100%" }}>
           <tr>
-            <td colSpan={2}>
+            <td colSpan={3}>
               <h2 className="m-0 text-[#a70000] font-bold">Detail Product</h2>
             </td>
           </tr>
@@ -61,18 +112,57 @@ const DetailProduct = () => {
             <td className="m-0 text-[#000] font-bold">Produk Terjual</td>
             <td>: {detailProduct?.total_terjual}</td>
           </tr>
-          <tr>
-            <td className="m-0 text-[#000] font-bold">Gambar Produk</td>
-            <td>:</td>
-          </tr>
+
           <tr>
             <td></td>
             <td>
               {detailProduct?.image_list?.map((e: any) => (
                 <>
                   <Image src={e?.url} width="250px" />
+                  <br />
+                  <Tooltip title="Change Image" color={"#FAA21B"}>
+                    <FileImageOutlined
+                      onClick={() =>
+                        navigate(
+                          "/list/product/form/update-icon/" +
+                            e?.id +
+                            "#url=" +
+                            e?.url +
+                            "&id=" +
+                            detailProduct?.id
+                        )
+                      }
+                    />
+                  </Tooltip>
+                  <Tooltip title="Delete" color="red">
+                    <DeleteOutlined onClick={() => onDelete(e?.id)} />
+                  </Tooltip>
                 </>
               ))}
+            </td>
+          </tr>
+          <tr>
+            <td className="m-0 text-[#000] font-bold">Gambar Produk</td>
+            <td>
+              <FileUploader
+                onData={(data: any) =>
+                  setForm((prev: any) => ({ ...prev, data: data }))
+                }
+                disabled={loading}
+                multiple={true}
+              />
+            </td>
+            <td>
+              <span style={{ float: "left" }}>
+                <Button
+                  onClick={handleSubmit}
+                  type="primary"
+                  loading={loading}
+                  disabled={_isEmpty(form?.data)}
+                >
+                  Add
+                </Button>
+              </span>
             </td>
           </tr>
         </table>

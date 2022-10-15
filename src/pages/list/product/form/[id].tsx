@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 import {
   Breadcrumb,
@@ -12,64 +12,40 @@ import {
 } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import {
-  addMasterProduct,
   getMasterTireBrand,
   getMasterTireSize,
   getMasterTireType,
 } from "@/services/master";
-import FileUploader from "@/components/FileUploader";
 import _isEmpty from "lodash/isEmpty";
-
-const columns = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    key: "id",
-  },
-  {
-    title: "NAME",
-    dataIndex: "nama",
-    key: "nama",
-  },
-  {
-    title: "LOGO",
-    dataIndex: "icon",
-    key: "icon",
-    align: "center",
-    render: (_: any, record: any) => (
-      <>
-        <img width="81px" src={record?.icon}></img>
-      </>
-    ),
-  },
-];
+import { getDetailProduct, updateProduct } from "@/services/product";
+import LoadingPage from "@/components/loading/LoadingPage";
 
 const BrandBan = () => {
+  const params = useParams();
   const [form, setForm] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const { dataTireBrand } = getMasterTireBrand();
   const { dataTireType } = getMasterTireType();
   const { dataTireSize } = getMasterTireSize();
+  const { detailProduct, isLoading } = getDetailProduct(params?.id);
 
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
     setLoading(true);
-    try {
-      let data = new FormData();
-      data.append("sku", form?.sku);
-      data.append("name", form?.name);
-      data.append("brand_id", form?.brand_id);
-      data.append("tire_type", form?.tire_type);
-      data.append("size", form?.tire_size);
-      data.append("price", form?.price);
-      data.append("stock", form?.stock);
-      data.append("description", form?.description);
 
-      form?.data?.map((e: any) => {
-        data.append("photos", e.originFileObj);
-      });
-      await addMasterProduct(data).then(() => {
+    const payload = {
+      id: detailProduct?.id,
+      name: form?.name,
+      id_tire_brand: form?.brand_id, // lov tire brand
+      tire_type: form?.tire_type,
+      size: form?.tire_size,
+      price: form?.price,
+      stock: Number(form?.stock),
+      description: form?.description,
+    };
+    try {
+      await updateProduct(JSON.stringify(payload)).then(() => {
         navigate("/list/product");
         setLoading(false);
       });
@@ -77,15 +53,33 @@ const BrandBan = () => {
       message.error(`${form?.data.name} file failed.`);
     }
   };
+
+  useEffect(() => {
+    if (detailProduct) {
+      setForm({
+        name:
+          detailProduct?.nama_barang.split(" ")[2] ||
+          detailProduct?.nama_barang,
+        brand_id: detailProduct?.nama_barang.split(" ")[0],
+        tire_type: detailProduct?.jenis_ban,
+        size: detailProduct?.ukuran,
+        price: detailProduct?.harga_jual_final,
+        description: detailProduct?.deskripsi,
+      });
+    }
+  }, []);
+
+  if (isLoading) return <LoadingPage />;
+
   return (
     <>
       <Breadcrumb>
         <Breadcrumb.Item>List Barang</Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/list/brand-motor">Daftar Product</NavLink>
+          <NavLink to="/list/product">Daftar Product</NavLink>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/list/brand-motor/form">Form</NavLink>
+          <NavLink to="/list/product/form">Form</NavLink>
         </Breadcrumb.Item>
       </Breadcrumb>
       <Divider
@@ -93,28 +87,9 @@ const BrandBan = () => {
       />
 
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
-        <h2 className="m-0 text-[#000] font-bold">Add Product</h2>
+        <h2 className="m-0 text-[#000] font-bold">Edit Product</h2>
         <br />
         <table width={"100%"} cellPadding={8}>
-          <tr>
-            <td>
-              <span>
-                <span className="text-red-500">* </span>
-                SKU
-              </span>
-            </td>
-            <td>:</td>
-            <td>
-              <Input
-                style={{ width: 350 }}
-                onChange={(e) => {
-                  setForm((prev: any) => ({ ...prev, sku: e.target.value }));
-                }}
-                disabled={loading}
-                placeholder="Masukkan SKU"
-              />
-            </td>
-          </tr>
           <tr>
             <td>
               <span>
@@ -126,6 +101,7 @@ const BrandBan = () => {
             <td>
               <Input
                 style={{ width: 350 }}
+                value={form?.name}
                 onChange={(e) =>
                   setForm((prev: any) => ({ ...prev, name: e.target.value }))
                 }
@@ -149,6 +125,7 @@ const BrandBan = () => {
                   value: e.id_merk,
                   label: e.merk,
                 }))}
+                value={form?.brand_id}
                 onChange={(e) =>
                   setForm((prev: any) => ({ ...prev, brand_id: e }))
                 }
@@ -172,6 +149,7 @@ const BrandBan = () => {
                   value: e.value,
                   label: e.value,
                 }))}
+                value={form?.tire_type}
                 onChange={(e) =>
                   setForm((prev: any) => ({ ...prev, tire_type: e }))
                 }
@@ -224,6 +202,7 @@ const BrandBan = () => {
                       }))
                     )[0]
                 }
+                value={form?.tire_size}
                 onChange={(e) =>
                   setForm((prev: any) => ({ ...prev, tire_size: e }))
                 }
@@ -247,6 +226,7 @@ const BrandBan = () => {
                   setForm((prev: any) => ({ ...prev, price: e.target.value }))
                 }
                 disabled={loading}
+                value={form?.price}
                 type="number"
                 placeholder="Masukkan harga"
               />
@@ -289,6 +269,7 @@ const BrandBan = () => {
                     description: e.target.value,
                   }))
                 }
+                value={form?.description}
                 disabled={loading}
                 placeholder="Masukkan description"
               />
@@ -296,26 +277,7 @@ const BrandBan = () => {
           </tr>
           <tr>
             <td>
-              <span>
-                <span className="text-red-500">* </span>
-                Photos
-              </span>
-            </td>
-            <td>:</td>
-            <td>
-              <FileUploader
-                onData={(data: any) =>
-                  setForm((prev: any) => ({ ...prev, data: data }))
-                }
-                disabled={loading}
-                multiple={true}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
               <div className="text-red-600 mt-2">*required</div>
-              <div className="text-red-600 mt-2">**max. 1 MB</div>
             </td>
             <td colSpan={2}>
               <span style={{ float: "right" }}>
@@ -325,10 +287,8 @@ const BrandBan = () => {
                   loading={loading}
                   disabled={
                     !form?.name ||
-                    !form?.data ||
                     !form?.tire_type ||
                     !form?.brand_id ||
-                    !form?.sku ||
                     !form?.tire_size ||
                     !form?.price ||
                     !form?.description
