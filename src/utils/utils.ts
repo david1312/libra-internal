@@ -12,3 +12,13 @@ export async function printPage(printArea: any) {
     },
   });
 }
+
+export function paginat(data: any, i: any) {
+  return `${
+    data?.info?.cur_page > 1 && (i + 1) % 10 === 0
+      ? data?.info?.cur_page + 1 + "0"
+      : data?.info?.cur_page > 1
+      ? data?.info?.cur_page + `${i + 1}`
+      : i + 1
+  }`;
+}

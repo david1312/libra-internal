@@ -10,6 +10,7 @@ import {
   FileImageOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import { paginat } from "@/utils/utils";
 
 const BrandBan = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const BrandBan = () => {
   const onFetch = async (limit?: any, page?: any) => {
     const payload = {
       page: page || 1,
-      limit: limit || 1000,
+      limit: limit || 10,
     };
     try {
       const response = await getListMotors(JSON.stringify(payload));
@@ -148,12 +149,16 @@ const BrandBan = () => {
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <TableComponent
           columns={columns}
+          currentPage={listMotors?.info?.cur_page}
           data={listMotors?.data?.map((e: any, i: number) => ({
             ...e,
-            no: i + 1,
+            no: paginat(listMotors, i),
           }))}
           pagination={true}
-          onChange={(e: any, i: any) => {}}
+          total={listMotors?.info?.total_record}
+          onChange={(e: any, i: any) => {
+            onFetch(i, e);
+          }}
         />
       </Card>
     </>

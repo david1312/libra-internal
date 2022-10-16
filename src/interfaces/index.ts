@@ -31,4 +31,7 @@ export enum ENDPOINT {
   ADD_IMAGE_PRODUCT = "/merchant/products/images-add",
   UPDATE_IMAGE_PRODUCT = "/merchant/products/images-update",
   DELETE_IMAGE_PRODUCT = "/merchant/products/images-delete",
+  LIST_SIZE_RAW = "/master-data/tire-size-raw",
+  ADD_TIRE_SIZE = "/merchant/master-data/tire-size/add",
+  REMOVE_TIRE_SIZE = "/merchant/master-data/tire-size/delete",
 }

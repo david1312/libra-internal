@@ -95,11 +95,12 @@ export async function addMasterProduct(file: any) {
 }
 
 export function getMasterTireSize() {
-  const { data, error } = useSWR(ENDPOINT.TIRE_SIZE, apiFetcher);
+  const { data, error, mutate } = useSWR(ENDPOINT.TIRE_SIZE, apiFetcher);
   return {
     dataTireSize: data,
     isLoading: !error && !data,
     isError: error,
+    mutateList: mutate,
   };
 }
 
@@ -172,4 +173,30 @@ export function getMasterCategoryMotors() {
     isError: error,
     mutateList: mutate,
   };
+}
+
+export function getMasterSizeRaw() {
+  const { data, error, mutate } = useSWR(ENDPOINT.LIST_SIZE_RAW, apiFetcher);
+  return {
+    dataMasterSizeRaw: data,
+    isLoading: !error && !data,
+    isError: error,
+    mutateList: mutate,
+  };
+}
+
+export async function addMasterSize(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.ADD_TIRE_SIZE,
+    data: file,
+    method: "POST",
+  });
+}
+
+export async function removeMasterSize(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.REMOVE_TIRE_SIZE,
+    data: file,
+    method: "POST",
+  });
 }
