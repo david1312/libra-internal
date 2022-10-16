@@ -1,23 +1,49 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Breadcrumb, Card, Divider, Button, Tooltip, message } from "antd";
+import {
+  Breadcrumb,
+  Card,
+  Divider,
+  Button,
+  Tooltip,
+  message,
+  Input,
+  Select,
+} from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
-import { getListMotors, removeMasterMotors } from "@/services/master";
+import {
+  getListMotors,
+  getMasterBrand,
+  getMasterCategoryMotors,
+  removeMasterMotors,
+} from "@/services/master";
 import {
   PlusOutlined,
   DeleteOutlined,
   EditOutlined,
   FileImageOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { paginat } from "@/utils/utils";
-
 const BrandBan = () => {
   const navigate = useNavigate();
+  const { dataMasterBrand } = getMasterBrand();
+  const { dataMasterCategory } = getMasterCategoryMotors();
+  const [query, setQuery] = useState<any>({});
   const [listMotors, setListMotors] = useState<any>([]);
 
-  const onFetch = async (limit?: any, page?: any) => {
+  const onFetch = async (
+    limit?: any,
+    page?: any,
+    name?: any,
+    id_brand_motor?: any,
+    id_category_motor?: any
+  ) => {
     const payload = {
+      name: name,
+      id_brand_motor: id_brand_motor,
+      id_category_motor: id_category_motor,
       page: page || 1,
       limit: limit || 10,
     };
@@ -46,12 +72,12 @@ const BrandBan = () => {
   };
 
   const columns = [
-    {
-      title: "NO",
-      dataIndex: "no",
-      key: "no",
-      width: 50,
-    },
+    // {
+    //   title: "NO",
+    //   dataIndex: "no",
+    //   key: "no",
+    //   width: 50,
+    // },
     {
       title: "NAME",
       dataIndex: "name",
@@ -119,6 +145,8 @@ const BrandBan = () => {
     },
   ];
 
+  const set = (value: any) => setQuery((p: any) => ({ ...p, ...value }));
+
   return (
     <>
       <Breadcrumb>
@@ -132,6 +160,54 @@ const BrandBan = () => {
       />
       <table width={"100%"}>
         <tr>
+          <td>
+            <Input
+              placeholder="Masukkan nama"
+              onChange={(e: any) => set({ name: e.target.value })}
+            />
+          </td>
+          <td>
+            <Select
+              style={{ width: 200 }}
+              options={(dataMasterBrand || [])?.map((e: any) => ({
+                value: e.id,
+                label: e.nama,
+              }))}
+              onChange={(e) => set({ id_brand_motor: e })}
+              placeholder="Masukkan brand "
+            />
+            <Select
+              style={{ width: 200 }}
+              options={(dataMasterCategory || [])?.map((e: any) => ({
+                value: e.id,
+                label: e.name,
+              }))}
+              onChange={(e) => set({ id_category_motor: e })}
+              placeholder="Masukkan category "
+            />
+            <Button
+              icon={<SearchOutlined />}
+              type="primary"
+              onClick={() =>
+                onFetch(
+                  100,
+                  1,
+                  query?.name,
+                  query?.id_brand_motor,
+                  query?.id_category_motor
+                )
+              }
+            >
+              Search
+            </Button>
+            <Button
+              icon={<DeleteOutlined />}
+              type="ghost"
+              onClick={() => onFetch(100, 1)}
+            >
+              Clear
+            </Button>
+          </td>
           <td>
             <span style={{ float: "right" }}>
               <Button
