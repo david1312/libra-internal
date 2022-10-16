@@ -1,19 +1,10 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Divider,
-  Form,
-  Input,
-  message,
-  Select,
-} from "antd";
+import { Breadcrumb, Button, Card, Divider, message, Select } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import {
-  addMasterMotor,
+  addMasterSize,
   getMasterSizeRaw,
   getMasterTireSize,
 } from "@/services/master";
@@ -33,7 +24,7 @@ const BrandBan = () => {
     };
     setLoading(true);
     try {
-      await addMasterMotor(JSON.stringify(payload)).then(() => {
+      await addMasterSize(JSON.stringify(payload)).then(() => {
         navigate("/list/size-tire");
         setLoading(false);
       });
