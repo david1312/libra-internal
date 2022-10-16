@@ -31,12 +31,12 @@ const BrandBan = () => {
   };
 
   const columns = [
-    {
-      title: "NO",
-      dataIndex: "no",
-      key: "no",
-      width: 50,
-    },
+    // {
+    //   title: "NO",
+    //   dataIndex: "no",
+    //   key: "no",
+    //   width: 50,
+    // },
     {
       title: "ID",
       dataIndex: "id_merk",

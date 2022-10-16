@@ -13,12 +13,12 @@ const BrandBan = () => {
   const currentPath = useLocation().pathname;
 
   const columns = [
-    {
-      title: "NO",
-      dataIndex: "no",
-      key: "no",
-      width: 50,
-    },
+    // {
+    //   title: "NO",
+    //   dataIndex: "no",
+    //   key: "no",
+    //   width: 50,
+    // },
     {
       title: "RING BAN",
       dataIndex: "ring_ban",

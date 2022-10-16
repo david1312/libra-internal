@@ -58,11 +58,11 @@ const ListTransactions = () => {
   const navigate = useNavigate();
 
   const columns = [
-    {
-      title: "No",
-      dataIndex: "no",
-      key: "no",
-    },
+    // {
+    //   title: "No",
+    //   dataIndex: "no",
+    //   key: "no",
+    // },
     {
       title: "INVOICE ID",
       dataIndex: "invoice_id",
