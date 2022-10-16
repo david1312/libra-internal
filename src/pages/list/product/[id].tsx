@@ -31,7 +31,7 @@ const DetailProduct = () => {
       data.append("id", detailProduct?.id);
 
       form?.data?.map((e: any) => {
-        data.append("icon", e.originFileObj);
+        data.append("photos", e.originFileObj);
       });
       await imageProduct("ADD", data).then(() => {
         mutateList();
