@@ -52,3 +52,10 @@ export async function imageProduct(type: any, file: any) {
     method: "POST",
   });
 }
+
+export async function detailProduct(id: any) {
+  return await api.request<void, void>({
+    url: `${ENDPOINT.DETAIL_PRODUCT}?id=${id}`,
+    method: "GET",
+  });
+}
