@@ -9,7 +9,7 @@ import FileUploader from "@/components/FileUploader";
 
 const BrandBan = () => {
   const params = useParams();
-  const { dataTireBrand, mutateList } = getMasterTireBrand();
+  const { dataTireBrand } = getMasterTireBrand();
   const [form, setForm] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -24,8 +24,11 @@ const BrandBan = () => {
         data.append("icon", e.originFileObj);
       });
       await updateIconTireBrand(data).then(() => {
-        mutateList();
-        navigate("/list/brand-tire");
+        navigate("/list/brand-tire", {
+          state: {
+            update: true,
+          },
+        });
         setLoading(false);
       });
     } catch (error) {

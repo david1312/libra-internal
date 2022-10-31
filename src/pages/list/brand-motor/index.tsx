@@ -10,12 +10,22 @@ import {
   EditOutlined,
   FileImageOutlined,
 } from "@ant-design/icons";
+import _get from "lodash/get";
+import { useEffect } from "react";
 
 const BrandBan = () => {
   const { dataMasterBrand, mutateList } = getMasterBrand();
   const navigate = useNavigate();
 
-  const currentPath = useLocation().pathname;
+  const location: any = useLocation();
+
+  const currentPath = location.pathname;
+
+  useEffect(() => {
+    if (location?.state?.update) {
+      mutateList();
+    }
+  }, [location]);
 
   const onDelete = async (id: any) => {
     const payload = {

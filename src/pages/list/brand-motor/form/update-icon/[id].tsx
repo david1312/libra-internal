@@ -33,7 +33,7 @@ const columns = [
 
 const BrandBan = () => {
   const params = useParams();
-  const { dataMasterBrand, isError } = getMasterBrand();
+  const { dataMasterBrand } = getMasterBrand();
   const [form, setForm] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -48,7 +48,11 @@ const BrandBan = () => {
         data.append("icon", e.originFileObj);
       });
       await updateIconMotorBrand(data).then(() => {
-        navigate("/list/brand-motor");
+        navigate("/list/brand-motor", {
+          state: {
+            update: true,
+          },
+        });
         setLoading(false);
       });
     } catch (error) {
