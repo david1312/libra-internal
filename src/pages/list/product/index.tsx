@@ -7,19 +7,34 @@ import {
   Card,
   Divider,
   Image,
+  Input,
   message,
+  Select,
   Tooltip,
 } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import { getListProduct } from "@/services/product";
-import { EyeOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
-import { deleteProduct } from "@/services/master";
+import {
+  deleteProduct,
+  getMasterSizeRaw,
+  getMasterTireBrand,
+} from "@/services/master";
 
 const ListProduct = () => {
   const [listProduct, setListProduct] = useState<any>([]);
   const navigate = useNavigate();
+  const { dataTireBrand, mutateList } = getMasterTireBrand();
+  const { dataMasterSizeRaw } = getMasterSizeRaw();
+
+  const [query, setQuery] = useState<any>({});
 
   const columns = [
     {
@@ -112,8 +127,17 @@ const ListProduct = () => {
     }
   };
 
-  const onFetch = async (limit?: any, page?: any) => {
+  const onFetch = async (
+    limit?: any,
+    page?: any,
+    name?: any,
+    brand_id?: any,
+    tire_size?: any
+  ) => {
     const payload = {
+      name: name,
+      brand_id: brand_id,
+      tire_size: tire_size,
       page: page || 1,
       limit: limit || 1000,
     };
@@ -127,6 +151,8 @@ const ListProduct = () => {
     onFetch();
   }, []);
 
+  const set = (value: any) => setQuery((p: any) => ({ ...p, ...value }));
+
   return (
     <>
       <Breadcrumb>
@@ -138,9 +164,53 @@ const ListProduct = () => {
       <Divider
         style={{ backgroundColor: "gray", marginTop: 15, marginBottom: 10 }}
       />
-
+      <Divider
+        style={{ backgroundColor: "gray", marginTop: 15, marginBottom: 10 }}
+      />
       <table width={"100%"}>
         <tr>
+          <td>
+            <Input
+              placeholder="Masukkan nama"
+              onChange={(e: any) => set({ name: e.target.value })}
+            />
+          </td>
+          <td>
+            <Select
+              style={{ width: 200 }}
+              options={(dataTireBrand || [])?.map((e: any) => ({
+                value: e.id_merk,
+                label: e.merk,
+              }))}
+              onChange={(e) => set({ brand_id: e })}
+              placeholder="Masukkan merk ban "
+            />
+            <Select
+              style={{ width: 200 }}
+              options={(dataMasterSizeRaw || [])?.map((e: any) => ({
+                value: e.value,
+                label: e.value,
+              }))}
+              onChange={(e) => set({ tire_size: e })}
+              placeholder="Masukkan size "
+            />
+            <Button
+              icon={<SearchOutlined />}
+              type="primary"
+              onClick={() =>
+                onFetch(100, 1, query?.name, query?.brand_id, query?.tire_size)
+              }
+            >
+              Search
+            </Button>
+            <Button
+              icon={<DeleteOutlined />}
+              type="ghost"
+              onClick={() => onFetch(100, 1)}
+            >
+              Clear
+            </Button>
+          </td>
           <td>
             <span style={{ float: "right" }}>
               <Button
@@ -154,6 +224,7 @@ const ListProduct = () => {
           </td>
         </tr>
       </table>
+
       <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
         <TableComponent
           columns={columns}
