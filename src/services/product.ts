@@ -36,7 +36,7 @@ export async function imageProduct(type: any, file: any) {
 
   switch (type) {
     case "UPDATE":
-      urlType = ENDPOINT.UPDATE_IMAGE_MOTOR;
+      urlType = ENDPOINT.UPDATE_IMAGE_PRODUCT;
       break;
     case "DELETE":
       urlType = ENDPOINT.DELETE_IMAGE_PRODUCT;

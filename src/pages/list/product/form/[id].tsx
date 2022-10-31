@@ -23,6 +23,7 @@ import LoadingPage from "@/components/loading/LoadingPage";
 const BrandBan = () => {
   const params = useParams();
   const [form, setForm] = useState<any>({});
+  var initial = true;
   const [loading, setLoading] = useState(false);
   const { dataTireBrand } = getMasterTireBrand();
   const { dataTireType } = getMasterTireType();
@@ -37,7 +38,7 @@ const BrandBan = () => {
     const payload = {
       id: detailProduct?.id,
       name: form?.name,
-      id_tire_brand: form?.brand_id, // lov tire brand
+      id_tire_brand: form?.brand_id,
       tire_type: form?.tire_type,
       size: form?.tire_size,
       price: form?.price,
@@ -55,19 +56,22 @@ const BrandBan = () => {
   };
 
   useEffect(() => {
-    if (detailProduct) {
+    if (detailProduct && initial) {
       setForm({
         name:
           detailProduct?.nama_barang.split(" ")[2] ||
           detailProduct?.nama_barang,
         brand_id: detailProduct?.nama_barang.split(" ")[0],
         tire_type: detailProduct?.jenis_ban,
-        size: detailProduct?.ukuran,
+        tire_ring: detailProduct?.tire_ring,
+        tire_size: detailProduct?.ukuran,
         price: detailProduct?.harga_jual_final,
         description: detailProduct?.deskripsi,
+        stock: Number(detailProduct?.stock),
       });
+      initial = false;
     }
-  }, []);
+  }, [detailProduct]);
 
   if (isLoading) return <LoadingPage />;
 
@@ -176,6 +180,7 @@ const BrandBan = () => {
                 onChange={(e) =>
                   setForm((prev: any) => ({ ...prev, tire_ring: e }))
                 }
+                value={form?.tire_ring}
                 disabled={loading}
                 placeholder="Pilih tire ring"
               />
@@ -248,6 +253,7 @@ const BrandBan = () => {
                 }
                 disabled={loading}
                 type="number"
+                value={form?.stock}
                 placeholder="Masukkan stock barang"
               />
             </td>

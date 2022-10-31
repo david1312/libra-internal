@@ -19,7 +19,7 @@ const BrandBan = () => {
     setLoading(true);
     try {
       let data = new FormData();
-      data.append("id", params?.id);
+      data.append("id_image", params?.id);
 
       form?.data?.map((e: any) => {
         data.append("icon", e.originFileObj);
@@ -30,6 +30,7 @@ const BrandBan = () => {
       });
     } catch (error) {
       message.error(`${form?.data.name} file failed.`);
+      setLoading(false);
     }
   };
 

@@ -5,9 +5,11 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Col,
   Divider,
   Image,
   message,
+  Row,
   Spin,
   Tooltip,
 } from "antd";
@@ -118,25 +120,32 @@ const DetailProduct = () => {
             <td>
               {detailProduct?.image_list?.map((e: any) => (
                 <>
-                  <Image src={e?.url} width="250px" />
-                  <br />
-                  <Tooltip title="Change Image" color={"#FAA21B"}>
-                    <FileImageOutlined
-                      onClick={() =>
-                        navigate(
-                          "/list/product/form/update-icon/" +
-                            e?.id +
-                            "#url=" +
-                            e?.url +
-                            "&id=" +
-                            detailProduct?.id
-                        )
-                      }
-                    />
-                  </Tooltip>
-                  <Tooltip title="Delete" color="red">
-                    <DeleteOutlined onClick={() => onDelete(e?.id)} />
-                  </Tooltip>
+                  <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                    <Col className="gutter-row" span={15}>
+                      <Image src={e?.url} width="100%" />
+                    </Col>
+
+                    <Col className="gutter-row" span={9}>
+                      <Tooltip title="Change Image" color={"#FAA21B"}>
+                        <FileImageOutlined
+                          onClick={() =>
+                            navigate(
+                              "/list/product/form/update-icon/" +
+                                e?.id +
+                                "#url=" +
+                                e?.url +
+                                "&id=" +
+                                detailProduct?.id
+                            )
+                          }
+                        />
+                      </Tooltip>
+                      <Tooltip title="Delete" color="red">
+                        <DeleteOutlined onClick={() => onDelete(e?.id)} />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                  <Divider />
                 </>
               ))}
             </td>
