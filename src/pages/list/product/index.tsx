@@ -31,7 +31,7 @@ import {
 const ListProduct = () => {
   const [listProduct, setListProduct] = useState<any>([]);
   const navigate = useNavigate();
-  const { dataTireBrand, mutateList } = getMasterTireBrand();
+  const { dataTireBrand } = getMasterTireBrand();
   const { dataMasterSizeRaw } = getMasterSizeRaw();
 
   const [query, setQuery] = useState<any>({});
@@ -136,8 +136,8 @@ const ListProduct = () => {
   ) => {
     const payload = {
       name: name,
-      brand_id: brand_id,
-      tire_size: tire_size,
+      merkban: brand_id?.filter((e: any) => Boolean(e)),
+      ukuran: tire_size?.filter((e: any) => Boolean(e)),
       page: page || 1,
       limit: limit || 1000,
     };
@@ -148,7 +148,7 @@ const ListProduct = () => {
   };
 
   useEffect(() => {
-    onFetch();
+    onFetch(100, 1);
   }, []);
 
   const set = (value: any) => setQuery((p: any) => ({ ...p, ...value }));
@@ -182,7 +182,8 @@ const ListProduct = () => {
                 value: e.id_merk,
                 label: e.merk,
               }))}
-              onChange={(e) => set({ brand_id: e })}
+              onChange={(e) => set({ merkban: [e] })}
+              allowClear
               placeholder="Masukkan merk ban "
             />
             <Select
@@ -191,14 +192,14 @@ const ListProduct = () => {
                 value: e.value,
                 label: e.value,
               }))}
-              onChange={(e) => set({ tire_size: e })}
+              onChange={(e) => set({ ukuran: [e] })}
               placeholder="Masukkan size "
             />
             <Button
               icon={<SearchOutlined />}
               type="primary"
               onClick={() =>
-                onFetch(100, 1, query?.name, query?.brand_id, query?.tire_size)
+                onFetch(100, 1, query?.name, query?.merkban, query?.ukuran)
               }
             >
               Search
