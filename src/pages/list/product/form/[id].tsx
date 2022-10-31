@@ -58,9 +58,7 @@ const BrandBan = () => {
   useEffect(() => {
     if (detailProduct && initial) {
       setForm({
-        name:
-          detailProduct?.nama_barang.split(" ")[2] ||
-          detailProduct?.nama_barang,
+        name: detailProduct?.nama_barang,
         brand_id: detailProduct?.nama_barang.split(" ")[0],
         tire_type: detailProduct?.jenis_ban,
         tire_ring: detailProduct?.tire_ring,
