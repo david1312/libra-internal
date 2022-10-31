@@ -200,3 +200,11 @@ export async function removeMasterSize(file: any) {
     method: "POST",
   });
 }
+
+export async function addMasterRing(file: any) {
+  return await api.request<void, void>({
+    url: ENDPOINT.ADD_TIRE_RING,
+    data: file,
+    method: "POST",
+  });
+}

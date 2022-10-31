@@ -73,6 +73,14 @@ const BrandBan = () => {
               <Button
                 icon={<PlusOutlined />}
                 type="primary"
+                onClick={() => navigate(currentPath + "/form-ring")}
+              >
+                Add New Ring
+              </Button>
+              &nbsp;
+              <Button
+                icon={<PlusOutlined />}
+                type="primary"
                 onClick={() => navigate(currentPath + "/form")}
               >
                 Add New Size

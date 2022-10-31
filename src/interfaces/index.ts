@@ -34,4 +34,5 @@ export enum ENDPOINT {
   LIST_SIZE_RAW = "/master-data/tire-size-raw",
   ADD_TIRE_SIZE = "/merchant/master-data/tire-size/add",
   REMOVE_TIRE_SIZE = "/merchant/master-data/tire-size/delete",
+  ADD_TIRE_RING = "/merchant/master-data/tire-ring/add",
 }
