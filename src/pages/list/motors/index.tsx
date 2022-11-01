@@ -8,6 +8,7 @@ import {
   message,
   Input,
   Select,
+  Modal,
 } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
@@ -16,6 +17,7 @@ import {
   getMasterBrand,
   getMasterCategoryMotors,
   removeMasterMotors,
+  updateMasterMotor,
 } from "@/services/master";
 import {
   PlusOutlined,
@@ -26,12 +28,16 @@ import {
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { paginat } from "@/utils/utils";
+import _isEmpty from "lodash/isEmpty";
+
 const BrandBan = () => {
   const navigate = useNavigate();
   const { dataMasterBrand } = getMasterBrand();
   const { dataMasterCategory } = getMasterCategoryMotors();
   const [query, setQuery] = useState<any>({});
   const [listMotors, setListMotors] = useState<any>([]);
+  const [edit, setEdit] = useState<any>({ show: false, data: {} });
+  const [loading, setLoading] = useState(false);
 
   const onFetch = async (
     limit?: any,
@@ -68,6 +74,23 @@ const BrandBan = () => {
       message.success(`Deleted file successfull.`);
     } catch (error) {
       message.error(`Deleted file failed.`);
+    }
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    const payload = {
+      ...edit?.data,
+    };
+    try {
+      await updateMasterMotor(JSON.stringify(payload)).then(() => {
+        onFetch(100, 1);
+        setEdit({ data: "", show: false });
+        setLoading(false);
+      });
+    } catch (error) {
+      message.error(`${edit?.data?.name} file failed.`);
+      setLoading(false);
     }
   };
 
@@ -110,7 +133,13 @@ const BrandBan = () => {
           <Tooltip title="Update" color={"#FAA21B"}>
             <Button
               onClick={() => {
-                navigate("/list/motors/form/" + record?.id);
+                // navigate("/list/motors/form/" + record?.id);
+                setEdit({
+                  show: true,
+                  data: listMotors?.data?.find(
+                    (e: any) => e.id === Number(record?.id)
+                  ),
+                });
               }}
               icon={<EditOutlined />}
               shape="circle"
@@ -237,6 +266,110 @@ const BrandBan = () => {
           }}
         />
       </Card>
+      <Modal
+        visible={edit?.show}
+        title="Edit Brand Motor"
+        onCancel={() => setEdit({ data: "", show: false })}
+        footer={[
+          <Button key="back" onClick={() => setEdit({ data: "", show: false })}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={handleSubmit}
+            disabled={_isEmpty(edit?.data?.name) && _isEmpty(edit?.data)}
+          >
+            Submit
+          </Button>,
+        ]}
+      >
+        <br />
+        <table width={"100%"} cellPadding={8}>
+          <tr>
+            <td>
+              <span>
+                <span className="text-red-500">* </span>
+                Name
+              </span>
+            </td>
+            <td>:</td>
+            <td>
+              <Input
+                style={{ width: 350 }}
+                onChange={(e) =>
+                  setEdit((prev: any) => ({
+                    ...prev,
+                    data: { ...edit?.data, name: e.target.value },
+                  }))
+                }
+                disabled={loading}
+                value={edit?.data?.name}
+                placeholder="Masukkan nama "
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>
+                <span className="text-red-500">* </span>
+                Brand Motor
+              </span>
+            </td>
+            <td>:</td>
+            <td>
+              <Select
+                style={{ width: 350 }}
+                value={edit?.data?.id_brand_motor}
+                options={(dataMasterBrand || [])?.map((e: any) => ({
+                  value: e.id,
+                  label: e.nama,
+                }))}
+                onChange={(e) =>
+                  setEdit((prev: any) => ({
+                    ...prev,
+                    data: { ...edit?.data, id_brand_motor: e },
+                  }))
+                }
+                disabled={loading}
+                placeholder="Masukkan brand motor"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>
+                <span className="text-red-500">* </span>
+                Categoty Motor
+              </span>
+            </td>
+            <td>:</td>
+            <td>
+              <Select
+                value={edit?.data?.id_category_motor}
+                style={{ width: 350 }}
+                options={(dataMasterCategory || [])?.map((e: any) => ({
+                  value: e.id,
+                  label: e.name,
+                }))}
+                onChange={(e) =>
+                  setEdit((prev: any) => ({
+                    ...prev,
+                    data: { ...edit?.data, id_category_motor: e },
+                  }))
+                }
+                disabled={loading}
+                placeholder="Masukkan category motor"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div className="text-red-600 mt-2">*required</div>
+            </td>
+          </tr>
+        </table>
+      </Modal>
     </>
   );
 };
