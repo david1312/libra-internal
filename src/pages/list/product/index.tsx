@@ -273,7 +273,7 @@ const ListProduct = () => {
               <Button
                 icon={<PlusOutlined />}
                 type="primary"
-                onClick={() => navigate(currentPath + "/edit?.data  ")}
+                onClick={() => navigate(currentPath + "/form  ")}
               >
                 Add New Product
               </Button>
