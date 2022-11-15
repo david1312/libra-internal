@@ -36,6 +36,7 @@ import {
   getMasterTireType,
 } from "@/services/master";
 import _isEmpty from "lodash/isEmpty";
+import { currencyFormat } from "@/utils/utils";
 
 const ListProduct = () => {
   const [listProduct, setListProduct] = useState<any>([]);
@@ -134,6 +135,15 @@ const ListProduct = () => {
       title: "HARGA FINAL",
       dataIndex: "harga_jual_final",
       key: "harga_jual",
+      render: (_: any, record: any) =>
+        `Rp. ${currencyFormat(record?.harga_jual_final)}`,
+    },
+    {
+      title: "HARGA CORET",
+      dataIndex: "harga_jual_coret",
+      key: "harga_coret",
+      render: (_: any, record: any) =>
+        `Rp. ${currencyFormat(record?.harga_jual_final)}`,
     },
     {
       title: "GAMBAR",

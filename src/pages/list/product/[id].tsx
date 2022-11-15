@@ -18,6 +18,7 @@ import { getDetailProduct, imageProduct } from "@/services/product";
 import FileUploader from "@/components/FileUploader";
 import _isEmpty from "lodash/isEmpty";
 import { DeleteOutlined, FileImageOutlined } from "@ant-design/icons";
+import { currencyFormat } from "@/utils/utils";
 
 const DetailProduct = () => {
   const params = useParams();
@@ -94,6 +95,14 @@ const DetailProduct = () => {
           <tr>
             <td className="m-0 text-[#000] font-bold">Jenis Ban</td>
             <td>: {detailProduct?.jenis_ban}</td>
+          </tr>
+          <tr>
+            <td className="m-0 text-[#000] font-bold">Harga Jual</td>
+            <td>: Rp. {currencyFormat(detailProduct?.harga_jual_final)}</td>
+          </tr>
+          <tr>
+            <td className="m-0 text-[#000] font-bold">Harga Coret</td>
+            <td>: Rp. {currencyFormat(detailProduct?.harga_jual_coret)}</td>
           </tr>
           <tr>
             <td className="m-0 text-[#000] font-bold">Posisi</td>

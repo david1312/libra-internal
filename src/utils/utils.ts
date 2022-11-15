@@ -22,3 +22,9 @@ export function paginat(data: any, i: any) {
       : i + 1
   }`;
 }
+
+export const currencyFormat = (amount: any) => {
+  return Number(amount)
+    .toFixed(2)
+    .replace(/\d(?=(\d{3})+\.)/g, "$&,");
+};
