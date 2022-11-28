@@ -100,6 +100,7 @@ const ListProduct = () => {
       tire_type: edit?.data?.tire_type,
       size: edit?.data?.tire_size,
       price: edit?.data?.price,
+      strike_price: edit?.data?.strike_price,
       stock: Number(edit?.data?.stock),
       description: edit?.data?.description,
     };
@@ -143,7 +144,7 @@ const ListProduct = () => {
       dataIndex: "harga_jual_coret",
       key: "harga_coret",
       render: (_: any, record: any) =>
-        `Rp. ${currencyFormat(record?.harga_jual_final)}`,
+        `Rp. ${currencyFormat(record?.harga_jual_coret)}`,
     },
     {
       title: "GAMBAR",
@@ -189,6 +190,7 @@ const ListProduct = () => {
                       tire_ring: response?.data.data?.tire_ring,
                       tire_size: response?.data.data?.ukuran,
                       price: response?.data.data?.harga_jual_final,
+                      strike_price: response?.data?.data?.harga_jual_coret,
                       description: response?.data.data?.deskripsi,
                       stock: Number(response?.data.data?.stock),
                     },
@@ -319,6 +321,7 @@ const ListProduct = () => {
               !edit?.data?.brand_id ||
               !edit?.data?.tire_size ||
               !edit?.data?.price ||
+              !edit?.data?.strike_price ||
               !edit?.data?.description
             }
           >
@@ -486,6 +489,30 @@ const ListProduct = () => {
                 value={edit?.data?.price}
                 type="number"
                 placeholder="Masukkan harga"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>
+                <span className="text-red-500">* </span>
+                Strike Price
+              </span>
+            </td>
+            <td>:</td>
+            <td>
+              <Input
+                style={{ width: 350 }}
+                onChange={(e) =>
+                  setEdit((prev: any) => ({
+                    ...prev,
+                    data: { ...edit?.data, strike_price: e.target.value },
+                  }))
+                }
+                disabled={loading}
+                value={edit?.data?.strike_price}
+                type="number"
+                placeholder="Masukkan harga coret"
               />
             </td>
           </tr>

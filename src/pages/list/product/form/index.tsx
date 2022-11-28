@@ -63,6 +63,7 @@ const BrandBan = () => {
       data.append("tire_type", form?.tire_type);
       data.append("size", form?.tire_size);
       data.append("price", form?.price);
+      data.append("strike_price", form?.strike_price);
       data.append("stock", form?.stock);
       data.append("description", form?.description);
 
@@ -249,6 +250,29 @@ const BrandBan = () => {
                 disabled={loading}
                 type="number"
                 placeholder="Masukkan harga"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>
+                <span className="text-red-500">* </span>
+                Strike Price
+              </span>
+            </td>
+            <td>:</td>
+            <td>
+              <Input
+                style={{ width: 350 }}
+                onChange={(e) =>
+                  setForm((prev: any) => ({
+                    ...prev,
+                    strike_price: e.target.value,
+                  }))
+                }
+                disabled={loading}
+                type="number"
+                placeholder="Masukkan harga coret"
               />
             </td>
           </tr>
