@@ -183,18 +183,35 @@ const detailPemesanan = () => {
                   <th>Harga Satuan</th>
                   <th>Harga Total</th>
                 </tr>
-                {detailPemesanan?.list_product?.map((e: any) => {
-                  return (
-                    <tr>
-                      <td>{e.nama_barang}</td>
-                      <td>{e.jenis_ban}</td>
-                      <td>{e.ukuran}</td>
-                      <td>{e.qty}</td>
-                      <td>{e.harga_satuan_formatted}</td>
-                      <td>{e.harga_total_formatted}</td>
-                    </tr>
-                  );
-                })}
+                <tr>
+                  <td colSpan={6}>
+                    <hr />
+                  </td>
+                </tr>
+
+                {detailPemesanan?.list_product?.map(
+                  (e: any, i: number, row: any) => {
+                    return (
+                      <>
+                        <tr>
+                          <td>{e.nama_barang}</td>
+                          <td>{e.jenis_ban}</td>
+                          <td>{e.ukuran}</td>
+                          <td>{e.qty}</td>
+                          <td>{e.harga_satuan_formatted}</td>
+                          <td>{e.harga_total_formatted}</td>
+                        </tr>
+                        {row?.length !== i + 1 && (
+                          <tr>
+                            <td colSpan={6}>
+                              <hr />
+                            </td>
+                          </tr>
+                        )}
+                      </>
+                    );
+                  }
+                )}
               </table>
             </td>
           </tr>
@@ -207,15 +224,8 @@ const detailPemesanan = () => {
               color: "#fff",
             }}
             onClick={() => {
-              if (
-                condition(detailPemesanan?.status)?.next ===
-                "Pesanan Dibatalkan"
-              ) {
-                setConfirmation(true);
-                return;
-              }
-
-              return onProcess(condition(detailPemesanan?.status)?.next);
+              setConfirmation(true);
+              return;
             }}
           >
             {condition(detailPemesanan?.status)?.wording}
@@ -223,7 +233,9 @@ const detailPemesanan = () => {
         </span>
       </Card>
       <Modal
-        title={"Apakah Anda Yakin"}
+        title={`Apakah Anda Yakin - ${
+          condition(detailPemesanan?.status)?.next
+        }`}
         visible={confirmation}
         onOk={() => {
           onProcess(condition(detailPemesanan?.status)?.next);
@@ -232,11 +244,17 @@ const detailPemesanan = () => {
         onCancel={() => setConfirmation(false)}
         width={1000}
       >
-        <Input
-          name="reason"
-          onChange={(e) => setExtraNotes(e.target.value)}
-          placeholder="Masukkan alasan anda"
-        />
+        {condition(detailPemesanan?.status)?.next === "Pesanan Dibatalkan" && (
+          <>
+            <strong>Masukkan Alasan Anda</strong>
+            <br />
+            <Input
+              name="reason"
+              onChange={(e) => setExtraNotes(e.target.value)}
+              placeholder="Tulis disini"
+            />
+          </>
+        )}
       </Modal>
     </>
   );
