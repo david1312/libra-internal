@@ -31,6 +31,7 @@ const BrandBan = () => {
   const { dataMasterBrand, mutateList } = getMasterBrand();
   const navigate = useNavigate();
   const [edit, setEdit] = useState<any>({ show: false, data: {} });
+  const [deleted, setDeleted] = useState<any>({ show: false, data: {} });
   const [loading, setLoading] = useState(false);
 
   const location: any = useLocation();
@@ -51,6 +52,7 @@ const BrandBan = () => {
       await removeMasterMotorBrand(payload).then(() =>
         mutateList(dataMasterBrand.filter((e: any) => e.id !== id))
       );
+      setDeleted({ data: "", show: false });
       message.success(`Deleted file successfull.`);
     } catch (error) {
       message.error(`Deleted file failed.`);
@@ -141,7 +143,16 @@ const BrandBan = () => {
           <Tooltip title="Delete" color="red">
             <Button
               onClick={() => {
-                onDelete(record?.id);
+                const data = dataMasterBrand.find(
+                  (e: any) => e.id === Number(record?.id)
+                );
+                setDeleted({
+                  show: true,
+                  data: {
+                    name: data?.nama,
+                    id: data?.id,
+                  },
+                });
               }}
               icon={<DeleteOutlined />}
               shape="circle"
@@ -189,6 +200,29 @@ const BrandBan = () => {
           onChange={(e: any, i: any) => {}}
         />
       </Card>
+      <Modal
+        visible={deleted?.show}
+        title={`Delete Brand Motor - ${deleted?.data?.name}`}
+        onCancel={() => setDeleted({ data: "", show: false })}
+        footer={[
+          <Button
+            key="back"
+            onClick={() => setDeleted({ data: "", show: false })}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            onClick={() => onDelete(deleted?.data.id)}
+            disabled={_isEmpty(deleted?.data?.name) && _isEmpty(deleted?.data)}
+            style={{ backgroundColor: "red", color: "#fff" }}
+          >
+            Submit
+          </Button>,
+        ]}
+      >
+        Apakah anda yakin ?
+      </Modal>
       <Modal
         visible={edit?.show}
         title="Edit Brand Motor"

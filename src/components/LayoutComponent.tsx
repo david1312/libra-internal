@@ -108,9 +108,9 @@ const LayoutComponent = (props: any) => {
               <Menu.Item key="/list/product">
                 <NavLink to="/list/product">Daftar Product</NavLink>
               </Menu.Item>
-              <Menu.Item key="/list/transactions">
+              {/* <Menu.Item key="/list/transactions">
                 <NavLink to="/list/transactions">Daftar Transaksi</NavLink>
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item key="/list/brand-tire">
                 <NavLink to="/list/brand-tire">Daftar Merk Ban</NavLink>
               </Menu.Item>

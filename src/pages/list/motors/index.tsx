@@ -38,6 +38,7 @@ const BrandBan = () => {
   const [listMotors, setListMotors] = useState<any>([]);
   const [edit, setEdit] = useState<any>({ show: false, data: {} });
   const [loading, setLoading] = useState(false);
+  const [deleted, setDeleted] = useState<any>({ show: false, data: {} });
 
   const onFetch = async (
     limit?: any,
@@ -71,6 +72,7 @@ const BrandBan = () => {
     };
     try {
       await removeMasterMotors(payload).then(() => onFetch());
+      setDeleted({ data: "", show: false });
       message.success(`Deleted file successfull.`);
     } catch (error) {
       message.error(`Deleted file failed.`);
@@ -161,7 +163,12 @@ const BrandBan = () => {
           <Tooltip title="Delete" color="red">
             <Button
               onClick={() => {
-                onDelete(record?.id);
+                setDeleted({
+                  show: true,
+                  data: listMotors?.data?.find(
+                    (e: any) => e.id === Number(record?.id)
+                  ),
+                });
               }}
               icon={<DeleteOutlined />}
               shape="circle"
@@ -266,6 +273,29 @@ const BrandBan = () => {
           }}
         />
       </Card>
+      <Modal
+        visible={deleted?.show}
+        title={`Delete Varian Motor - ${deleted?.data?.name}`}
+        onCancel={() => setDeleted({ data: "", show: false })}
+        footer={[
+          <Button
+            key="back"
+            onClick={() => setDeleted({ data: "", show: false })}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            onClick={() => onDelete(deleted?.data.id)}
+            disabled={_isEmpty(deleted?.data?.name) && _isEmpty(deleted?.data)}
+            style={{ backgroundColor: "red", color: "#fff" }}
+          >
+            Submit
+          </Button>,
+        ]}
+      >
+        Apakah anda yakin ?
+      </Modal>
       <Modal
         visible={edit?.show}
         title="Edit Brand Motor"

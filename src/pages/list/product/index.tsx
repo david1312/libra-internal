@@ -47,6 +47,7 @@ const ListProduct = () => {
   const { dataTireSize } = getMasterTireSize();
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState<any>({ show: false, data: {} });
+  const [deleted, setDeleted] = useState<any>({ show: false, data: {} });
 
   const [query, setQuery] = useState<any>({});
 
@@ -58,6 +59,7 @@ const ListProduct = () => {
     };
     try {
       await deleteProduct(payload).then(() => onFetch());
+      setDeleted({ data: "", show: false });
       message.success(`Deleted file successfull.`);
     } catch (error) {
       message.error(`Deleted file failed.`);
@@ -207,8 +209,19 @@ const ListProduct = () => {
           &nbsp;
           <Tooltip title="Delete" color="red">
             <Button
-              onClick={() => {
-                onDelete(record?.id);
+              onClick={async () => {
+                try {
+                  const response: any = await detailProduct(record?.id);
+                  setDeleted({
+                    show: true,
+                    data: {
+                      id: response?.data.data?.id,
+                      name: response?.data.data.nama_barang,
+                    },
+                  });
+                } catch (error) {
+                  message.error(`Failed to get data.`);
+                }
               }}
               icon={<DeleteOutlined />}
               shape="circle"
@@ -303,6 +316,29 @@ const ListProduct = () => {
           onChange={(e: any, i: any) => onFetch(i, e)}
         />
       </Card>
+      <Modal
+        visible={deleted?.show}
+        title={`Delete Product - ${deleted?.data?.name}`}
+        onCancel={() => setDeleted({ data: "", show: false })}
+        footer={[
+          <Button
+            key="back"
+            onClick={() => setDeleted({ data: "", show: false })}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            onClick={() => onDelete(deleted?.data.id)}
+            disabled={_isEmpty(deleted?.data?.name) && _isEmpty(deleted?.data)}
+            style={{ backgroundColor: "red", color: "#fff" }}
+          >
+            Submit
+          </Button>,
+        ]}
+      >
+        Apakah anda yakin ?
+      </Modal>
       <Modal
         visible={edit?.show}
         title="Edit Product"

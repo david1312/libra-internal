@@ -83,10 +83,10 @@ const BrandBan = () => {
       <Breadcrumb>
         <Breadcrumb.Item>List Barang</Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/list/brand-motor">Daftar Product</NavLink>
+          <NavLink to="/list/product">Daftar Product</NavLink>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <NavLink to="/list/brand-motor/form">Form</NavLink>
+          <NavLink to="/list/product/form">Form</NavLink>
         </Breadcrumb.Item>
       </Breadcrumb>
       <Divider
