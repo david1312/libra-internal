@@ -75,6 +75,7 @@ const detailPemesanan = () => {
   const [loading, setLoading] = useState(false);
   const [detailPemesanan, setDetailPemesanan] = useState<any>({});
   const [confirmation, setConfirmation] = useState(false);
+  const [validatePayment, setValidatePayment] = useState(false);
   const [extraNotes, setExtraNotes] = useState("");
 
   const onFetch = async () => {
@@ -218,6 +219,23 @@ const detailPemesanan = () => {
         </table>
         <Divider />
         <span style={{ float: "right" }}>
+          {detailPemesanan?.status === "Menunggu Pembayaran" && (
+            <Button
+              style={{
+                backgroundColor: "#03A10E",
+                color: "#fff",
+                marginRight: 16,
+              }}
+              onClick={() => {
+                setValidatePayment(true);
+                setConfirmation(true);
+                return;
+              }}
+            >
+              Validasi Pembayaran
+            </Button>
+          )}
+
           <Button
             style={{
               backgroundColor: condition(detailPemesanan?.status)?.color,
@@ -234,11 +252,17 @@ const detailPemesanan = () => {
       </Card>
       <Modal
         title={`Apakah Anda Yakin - ${
-          condition(detailPemesanan?.status)?.next
+          validatePayment
+            ? "Validasi Pembayaran"
+            : condition(detailPemesanan?.status)?.next
         }`}
         visible={confirmation}
         onOk={() => {
-          onProcess(condition(detailPemesanan?.status)?.next);
+          if (validatePayment) {
+            onProcess("Menunggu Dipasang");
+          } else {
+            onProcess(condition(detailPemesanan?.status)?.next);
+          }
         }}
         confirmLoading={loading}
         onCancel={() => setConfirmation(false)}
