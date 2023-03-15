@@ -265,6 +265,7 @@ const BrandBan = () => {
           data={listMotors?.data?.map((e: any, i: number) => ({
             ...e,
             no: paginat(listMotors, i),
+            key: `motorList${i}`,
           }))}
           pagination={true}
           total={listMotors?.info?.total_record}

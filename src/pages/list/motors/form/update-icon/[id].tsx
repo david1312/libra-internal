@@ -34,35 +34,14 @@ const columns = [
 const BrandBan = () => {
   const params = useParams();
   const [form, setForm] = useState<any>({});
-  const [listMotors, setListMotors] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const onFetch = async (limit?: any, page?: any) => {
-    const payload = {
-      page: page || 1,
-      limit: limit || 1000,
-    };
-    try {
-      const response = await getListMotors(JSON.stringify(payload));
-      setListMotors(response.data.data);
-    } catch (error) {}
-  };
-
   useEffect(() => {
-    onFetch();
+    setForm({
+      id: params?.id,
+    });
   }, []);
-
-  useEffect(() => {
-    if (listMotors) {
-      const data = listMotors?.data?.find(
-        (e: any) => e.id === Number(params?.id)
-      );
-      setForm({
-        id: data?.id,
-      });
-    }
-  }, [listMotors]);
 
   const handleSubmit = async () => {
     setLoading(true);
