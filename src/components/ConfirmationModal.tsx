@@ -60,7 +60,7 @@ const ConfirmationModal = ({ title, payload, disabled }: any) => {
       </Button>
       <Modal
         title={"Upload " + title}
-        visible={visible}
+        open={visible}
         onOk={handleDeleteOk}
         confirmLoading={loading}
         onCancel={handleCancel}

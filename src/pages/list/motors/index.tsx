@@ -275,7 +275,7 @@ const BrandBan = () => {
         />
       </Card>
       <Modal
-        visible={deleted?.show}
+        open={deleted?.show}
         title={`Delete Varian Motor - ${deleted?.data?.name}`}
         onCancel={() => setDeleted({ data: "", show: false })}
         footer={[
@@ -298,7 +298,7 @@ const BrandBan = () => {
         Apakah anda yakin ?
       </Modal>
       <Modal
-        visible={edit?.show}
+        open={edit?.show}
         title="Edit Brand Motor"
         onCancel={() => setEdit({ data: "", show: false })}
         footer={[

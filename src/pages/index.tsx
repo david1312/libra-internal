@@ -1,7 +1,6 @@
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import LoginPage from "./login";
-import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
-import { Card, Col, Row, Statistic, Result, Divider } from "antd";
+import { Card, Col, Row, Statistic, Divider } from "antd";
 import { getProfile } from "@/services/user";
 import { useEffect } from "react";
 import useStorage from "@/hooks/useStorage";

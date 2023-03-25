@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 import { Breadcrumb, Card, Divider, message, Spin } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
@@ -7,7 +7,6 @@ import { getDetailTransactions } from "@/services/transactions";
 
 const detailPemesanan = () => {
   const params = useParams();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [detailPemesanan, setDetailPemesanan] = useState<any>({});
 

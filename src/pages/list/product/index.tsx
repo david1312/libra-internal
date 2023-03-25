@@ -17,7 +17,6 @@ import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
 import {
   detailProduct,
-  getDetailProduct,
   getListProduct,
   updateProduct,
 } from "@/services/product";
@@ -317,7 +316,7 @@ const ListProduct = () => {
         />
       </Card>
       <Modal
-        visible={deleted?.show}
+        open={deleted?.show}
         title={`Delete Product - ${deleted?.data?.name}`}
         onCancel={() => setDeleted({ data: "", show: false })}
         footer={[
@@ -340,7 +339,7 @@ const ListProduct = () => {
         Apakah anda yakin ?
       </Modal>
       <Modal
-        visible={edit?.show}
+        open={edit?.show}
         title="Edit Product"
         onCancel={() => setEdit({ data: "", show: false })}
         footer={[

@@ -108,11 +108,11 @@ const BrandBan = () => {
           columns={columns}
           data={dataTireSize?.map((e: any, i: number) => ({ ...e, no: i + 1 }))}
           pagination={true}
-          onChange={(e: any, i: any) => {}}
+          // onChange={(e: any, i: any) => {}}
         />
       </Card>
       <Modal
-        visible={deleted?.show}
+        open={deleted?.show}
         title={`Delete Ukuran Ban - ${deleted?.data?.id}`}
         onCancel={() => setDeleted({ data: "", show: false })}
         footer={[

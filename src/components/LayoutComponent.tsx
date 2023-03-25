@@ -1,16 +1,32 @@
 import { useState } from "react";
-import moment from "moment";
-import { useRecoilValue } from "recoil";
+import dayjs from "dayjs";
 import { NavLink, useLocation } from "react-router-dom";
-import { Avatar, Button, Layout, Menu, Modal, Card } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Button, Layout, Menu, Modal, Card, MenuProps } from "antd";
+import { HomeOutlined, ProjectOutlined, UserOutlined } from "@ant-design/icons";
 import useStorage from "@/hooks/useStorage";
-import Logo from "@/assets/logo.png";
 
 const { Header, Content, Sider } = Layout;
 
+type MenuItem = Required<MenuProps>["items"][number];
+
+function getItem(
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode,
+  children?: MenuItem[],
+  type?: "group"
+): MenuItem {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  } as MenuItem;
+}
+
 const LayoutComponent = (props: any) => {
-  const { set, get } = useStorage();
+  const { get } = useStorage();
   const { Meta } = Card;
 
   const location = useLocation();
@@ -19,6 +35,18 @@ const LayoutComponent = (props: any) => {
   const [detail, setDetail] = useState(false);
 
   const profile = get("profile", []);
+
+  const items: MenuProps["items"] = [
+    getItem(<NavLink to="/">Overview</NavLink>, "item-1", <HomeOutlined />),
+
+    getItem("Laporan", "item-2", <ProjectOutlined />, [
+      getItem(
+        <NavLink to="/reports/laba-rugi">Laba Rugi Seluruh Faktur</NavLink>,
+        "item-2-sub-1"
+      ),
+    ]),
+    { type: "divider" },
+  ];
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -36,7 +64,7 @@ const LayoutComponent = (props: any) => {
               <Button type="primary">LOGOUT</Button>
             </NavLink>
             <span className="mx-8">
-              {moment().format("dddd, DD MMMM YYYY").toString()}
+              {dayjs().format("dddd, DD MMMM YYYY").toString()}
             </span>
           </div>
           <div className="flex">
@@ -89,54 +117,8 @@ const LayoutComponent = (props: any) => {
             }}
             defaultSelectedKeys={[selectedKeys[0]]}
             defaultOpenKeys={[openKeys]}
-          >
-            <Menu.Item key="/">
-              <NavLink to="/">Overview</NavLink>
-            </Menu.Item>
-            <Menu.SubMenu key="/pemesanan" title={"Pemesanan"}>
-              <Menu.Item key="/pemesanan/pemasangan">
-                <NavLink to="/pemesanan/pemasangan">Pemasangan Ban</NavLink>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu key="/list" title={"List Barang"}>
-              <Menu.Item key="/list/brand-motor">
-                <NavLink to="/list/brand-motor">Daftar Merk Motor</NavLink>
-              </Menu.Item>
-              <Menu.Item key="/list/motors">
-                <NavLink to="/list/motors">Daftar Varian Motor</NavLink>
-              </Menu.Item>
-              <Menu.Item key="/list/product">
-                <NavLink to="/list/product">Daftar Product</NavLink>
-              </Menu.Item>
-              {/* <Menu.Item key="/list/transactions">
-                <NavLink to="/list/transactions">Daftar Transaksi</NavLink>
-              </Menu.Item> */}
-              <Menu.Item key="/list/brand-tire">
-                <NavLink to="/list/brand-tire">Daftar Merk Ban</NavLink>
-              </Menu.Item>
-              <Menu.Item key="/list/size-tire">
-                <NavLink to="/list/size-tire">Daftar Ukuran Ban</NavLink>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <div>
-              <span
-                style={{
-                  position: "absolute",
-                  bottom: 20,
-                  left: 54,
-                }}
-              >
-                <img
-                  width={24}
-                  height={24}
-                  alt={"Logo"}
-                  src={Logo}
-                  style={{ marginRight: "8px" }}
-                />
-                PT. Libra Corporindo
-              </span>
-            </div>
-          </Menu>
+            items={items}
+          />
         </Sider>
         <Layout
           style={{
@@ -158,7 +140,7 @@ const LayoutComponent = (props: any) => {
       </Layout>
       <Modal
         title="Detail Merchant"
-        visible={detail}
+        open={detail}
         onCancel={() => setDetail(false)}
         footer={[
           <Button key="back" onClick={() => setDetail(false)}>

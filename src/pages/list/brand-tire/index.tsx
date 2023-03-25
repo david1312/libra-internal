@@ -206,11 +206,11 @@ const BrandBan = () => {
             no: i + 1,
           }))}
           pagination={true}
-          onChange={(e: any, i: any) => {}}
+          // onChange={(e: any, i: any) => {}}
         />
       </Card>
       <Modal
-        visible={deleted?.show}
+        open={deleted?.show}
         title={`Delete Merk Ban - ${deleted?.data?.name}`}
         onCancel={() => setDeleted({ data: "", show: false })}
         footer={[
@@ -233,7 +233,7 @@ const BrandBan = () => {
         Apakah anda yakin ?
       </Modal>
       <Modal
-        visible={edit?.show}
+        open={edit?.show}
         title="Edit Brand Motor"
         onCancel={() => setEdit({ data: "", show: false })}
         footer={[
