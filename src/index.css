@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 /* @import './variables/theme-variable.css'; */
 
@@ -15,12 +15,12 @@ body {
 }
 
 .login-button {
-  color: #FAA21B;
+  color: #faa21b;
 }
 
 .ant-table-thead > tr > th {
   color: white !important;
-  background: #FAA21B!important;
+  background: #faa21b !important;
 }
 
 .editable-cell {
@@ -47,7 +47,7 @@ body {
 }
 
 .ant-menu-item-selected {
-  background-color: #FAA21B !important;
+  background-color: #faa21b !important;
   border-left: 3px solid white;
 }
 
@@ -56,11 +56,50 @@ body {
 }
 
 .ant-btn-primary {
-  background-color: #FAA21B !important;
-  border: #FAA21B !important;
+  background-color: #faa21b !important;
+  border: #faa21b !important;
 }
 
 .ant-btn-danger {
   background-color: red !important;
   border: red !important;
+}
+
+.c-primary {
+  color: #faa21b;
+}
+
+.f-bold {
+  font-weight: bold;
+}
+
+.f-12 {
+  font-size: 12px;
+}
+
+.f-14 {
+  font-size: 14px;
+}
+
+.flex {
+  display: flex;
+}
+
+.filter-bar {
+  display: flex;
+  flex-direction: end;
+  align-content: space-around;
+  margin-left: 0.5rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.ml-05 {
+  margin-left: 0.5rem;
+}
+
+.ml-1 {
+  margin-left: 1rem;
 }

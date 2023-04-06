@@ -18,6 +18,14 @@ export async function getDetailTransactions(payload?: any) {
   });
 }
 
+export async function getJubelioReportTest(payload?: any) {
+  return await api.request<any, any>({
+    url: ENDPOINT.JUBELIO_TEST,
+    data: JSON.stringify(payload),
+    method: "POST",
+  });
+}
+
 export function getTransactions() {
   const { data, error } = useSWR(ENDPOINT.LIST_TRANSACTIONS, apiFetcher);
   return {

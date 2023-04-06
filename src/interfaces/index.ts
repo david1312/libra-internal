@@ -35,4 +35,5 @@ export enum ENDPOINT {
   ADD_TIRE_SIZE = "/merchant/master-data/tire-size/add",
   REMOVE_TIRE_SIZE = "/merchant/master-data/tire-size/delete",
   ADD_TIRE_RING = "/merchant/master-data/tire-ring/add",
+  JUBELIO_TEST = "/reports/sales-list/revenue_detail/?date_from=2023-02-28T17:00:00.000Z&date_to=2023-03-03T16:59:59.999Z&tz=Asia/Jakarta",
 }

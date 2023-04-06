@@ -2,7 +2,8 @@ import axios from "axios";
 import { notification } from "antd";
 import Cookies from "js-cookie";
 
-const base = "https://api.sunmorisemestaban.com/v1";
+const base = "https://api.libra-internal.com.sunmorisemestaban.com/v1";
+// const base = "http://localhost:8097/v1";
 
 const FORM_DATA = [
   "/list/brand-tire/form",
@@ -15,6 +16,10 @@ const FORM_DATA = [
 
 export const api = axios.create({
   baseURL: base,
+});
+
+export const rawApi = axios.create({
+  baseURL: "https://api2-lb.jubelio.com",
 });
 
 export function getAnomToken() {
@@ -31,6 +36,9 @@ export function getAnomToken() {
 
 export const apiFetcher = (resource: string) =>
   api.get(resource).then((res) => res.data.data);
+
+export const apiFetcherRaw = (resource: string) =>
+  rawApi.get(resource).then((res) => res.data.data);
 
 api.interceptors.request.use(
   function (config) {
