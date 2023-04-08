@@ -42,3 +42,11 @@ export async function updateStatusTransactions(payload?: any) {
     method: "POST",
   });
 }
+
+export async function getListAllSales(payload?: any) {
+  return await api.request<any, any>({
+    url: ENDPOINT.GET_ALL_SALES,
+    data: JSON.stringify(payload),
+    method: "POST",
+  });
+}

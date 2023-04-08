@@ -1,6 +1,6 @@
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import LoginPage from "./login";
-import { Card, Col, Row, Statistic, Divider } from "antd";
+import { Card, Col, Row, Statistic, Divider, Result } from "antd";
 import { getProfile } from "@/services/user";
 import { useEffect } from "react";
 import useStorage from "@/hooks/useStorage";
@@ -18,12 +18,12 @@ function HomePage() {
   }, [dataProfile]);
   return (
     <div className="site-statistic-demo-card">
-      {/* <Result
-        status="warning"
-        title="Semesta Ban Dashboard Under Maintenance"
-        subTitle="Please contact Administrator for further information!"
-      /> */}
-      <Row gutter={16}>
+      <Result
+        status="info"
+        title="Selamat Datang Di Aplikasi Dashboard Internal Semesta Ban"
+        subTitle="Menu aplikasi bisa anda lihat pada menu bar yang ada di sebelah kiri layar anda"
+      />
+      {/* <Row gutter={16}>
         <Col span={8}>
           <Card>
             <Statistic
@@ -113,7 +113,7 @@ function HomePage() {
             height="auto"
           />
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 }

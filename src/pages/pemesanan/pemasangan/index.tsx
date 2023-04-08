@@ -4,7 +4,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Breadcrumb, Button, Card, Divider, Tooltip } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
-import { getListTransactions, getTransactions } from "@/services/transactions";
+import { getListTransactions } from "@/services/transactions";
 import {
   FieldTimeOutlined,
   LoadingOutlined,

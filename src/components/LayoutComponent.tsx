@@ -37,7 +37,7 @@ const LayoutComponent = (props: any) => {
   const profile = get("profile", []);
 
   const items: MenuProps["items"] = [
-    getItem(<NavLink to="/">Overview</NavLink>, "item-1", <HomeOutlined />),
+    getItem(<NavLink to="/">Home</NavLink>, "item-1", <HomeOutlined />),
 
     getItem("Laporan", "item-2", <ProjectOutlined />, [
       getItem(

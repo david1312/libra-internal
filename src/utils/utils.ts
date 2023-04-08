@@ -23,8 +23,12 @@ export function paginat(data: any, i: any) {
   }`;
 }
 
-export const currencyFormat = (amount: any) => {
+export const currencyFormat = (amount: any, delimiter: number = 2) => {
   return Number(amount)
-    .toFixed(2)
+    .toFixed(delimiter)
     .replace(/\d(?=(\d{3})+\.)/g, "$&,");
+};
+
+export const formatNumber = (amount: any, delimiter: number = 2) => {
+  return amount.toLocaleString("en-us", { minimumFractionDigits: delimiter });
 };

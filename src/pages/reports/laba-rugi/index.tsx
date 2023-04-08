@@ -1,19 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import {
-  Breadcrumb,
-  Card,
-  Col,
-  Divider,
-  Space,
-  Tag,
-  Row,
-  Input,
-  Button,
-} from "antd";
+import { Breadcrumb, Card, Col, Divider, Row, Input, Button } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
-import { getListTransactions } from "@/services/transactions";
+import { getListAllSales } from "@/services/transactions";
 // import {
 //   FieldTimeOutlined,
 //   LoadingOutlined,
@@ -23,21 +13,25 @@ import { getListTransactions } from "@/services/transactions";
 import Table, { ColumnsType } from "antd/es/table";
 import { SearchOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { currencyFormat, formatNumber } from "@/utils/utils";
 
 interface DataType {
   key: string;
   no: number;
-  invoice: string;
+  no_pesanan: string;
   tanggal: string;
   channel: string;
-  harga_jual: number;
-  laba_kotor: number;
-  laba_bersih: number;
+  nett_sales: number;
+  gross_profit: number;
+  potongan_marketplace: number;
+  net_profit: number;
   // tags: string[];
 }
 
 const ListTransactions = () => {
-  const [listTransactions, setListTransactions] = useState<any>([]);
+  const [listTransactions, setListTransactions] = useState<DataType[]>([]);
+  const [summaryData, setSummaryData] = useState<any>({});
+  const [paginationData, setPaginationData] = useState<any>({});
 
   const today = new Date();
   const todayString = today.toISOString().slice(0, 10);
@@ -73,7 +67,7 @@ const ListTransactions = () => {
     },
     {
       title: "Invoice",
-      dataIndex: "invoice",
+      dataIndex: "no_pesanan",
       key: "sales_invoice",
       render: (text) => <a onClick={() => clickTest(text)}>{text}</a>,
     },
@@ -89,228 +83,67 @@ const ListTransactions = () => {
     },
     {
       title: "Harga Jual",
-      dataIndex: "harga_jual",
-      key: "sales_harga_jual",
-      render: (text) =>
-        text.toLocaleString("en-us", { minimumFractionDigits: 2 }),
+      dataIndex: "nett_sales",
+      key: "sales_nett_sales",
+      render: (text) => formatNumber(text),
     },
     {
       title: "Laba Kotor",
-      dataIndex: "laba_kotor",
-      key: "sales_kotor",
+      dataIndex: "gross_profit",
+      key: "sales_gross_profit",
+      render: (text) => formatNumber(text),
+    },
+    {
+      title: "Fee Marketplace",
+      dataIndex: "potongan_marketplace",
+      key: "sales_fee",
+      render: (text) => formatNumber(text),
     },
     {
       title: "Laba Bersih",
-      dataIndex: "laba_bersih",
-      key: "sales_bersih",
-    },
-    // {
-    //   title: "Tags",
-    //   key: "tags",
-    //   dataIndex: "tags",
-    //   render: (_, { tags }) => (
-    //     <>
-    //       {tags.map((tag) => {
-    //         let color = tag.length > 5 ? "geekblue" : "green";
-    //         if (tag === "loser") {
-    //           color = "volcano";
-    //         }
-    //         return (
-    //           <Tag color={color} key={tag}>
-    //             {tag.toUpperCase()}
-    //           </Tag>
-    //         );
-    //       })}
-    //     </>
-    //   ),
-    // },
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   render: (_, record) => (
-    //     <Space size="middle">
-    //       <a>Invite {record.invoice}</a>
-    //       <a>Delete</a>
-    //     </Space>
-    //   ),
-    // },
-  ];
-
-  const data: DataType[] = [
-    {
-      key: "1",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "2",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "3",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "4",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "5",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "6",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "7",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "8",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "9",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "10",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "11",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "12",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "13",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "14",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
-    },
-    {
-      key: "15",
-      no: 1,
-      invoice: "INV-XXX",
-      tanggal: "31 Mar",
-      channel: "LAZADA",
-      harga_jual: 100000.12,
-      laba_kotor: 20000,
-      laba_bersih: 15300.5,
+      dataIndex: "net_profit",
+      key: "sales_net_profit",
+      render: (text) => formatNumber(text),
     },
   ];
 
-  const onFetch = async (limit?: any, page?: any) => {
+  const onFetchSales = async (
+    limit: number = 20,
+    page: number = 1,
+    start_date?: string,
+    end_date?: string,
+    no_pesanan?: string
+  ) => {
     const payload = {
-      limit: limit || 1000,
+      limit: limit || 20,
       page: page || 1,
-      trans_status: [
-        "Pesanan Dibatalkan",
-        "Menunggu Pembayaran",
-        "Menunggu Dipasang",
-        "Diproses",
-        "Berhasil",
-        "Selesai",
-      ],
+      start_date: start_date,
+      end_date: end_date,
+      no_pesanan: no_pesanan || "",
     };
     try {
-      const response = await getListTransactions(payload);
-      setListTransactions(response.data.data);
+      const response = await getListAllSales(payload);
+      const salesList = response.data.data.data || [];
+      const paginationData = response.data.data.pagination || {};
+      const summaryData = response.data.data.summary_data || {};
+
+      setPaginationData(paginationData);
+      setSummaryData(summaryData);
+      setListTransactions(
+        salesList.map((val: any, index: number) => {
+          return {
+            key: `${val.id}`,
+            no: index + 1 + (paginationData.cur_page - 1) * limit,
+            ...val,
+          };
+        })
+      );
     } catch (error) {}
   };
 
   useEffect(() => {
     console.log("called");
-    // onFetch();
+    onFetchSales(20, 1, todayString, todayString);
   }, []);
 
   return (
@@ -371,22 +204,41 @@ const ListTransactions = () => {
           Laporan Laba Rugi <br />
           21 Maret 2023 - 30 Maret 2023
         </Col>
-        <Col span={24} style={{ maxHeight: "600px", overflow: "auto" }}>
-          <Table columns={columns} dataSource={data} pagination={false} />
+        <Col span={24} style={{ maxHeight: "480px", overflow: "auto" }}>
+          <Table
+            columns={columns}
+            dataSource={listTransactions}
+            pagination={false}
+          />
         </Col>
         <Row
           style={{
             display: "flex",
             flexDirection: "row",
             marginTop: "1rem",
-            justifyContent: "flex-end",
+            padding: "20px",
+            border: "1px solid #faa21b",
+            borderRadius: "10px",
           }}
           className="f-bold"
         >
-          <Col span={6}>Total Transaksi : 1,000</Col>
-          <Col span={6}>Total Omset : 1,100,500,000</Col>
-          <Col span={6}>Laba Kotor : 99,222,000</Col>
-          <Col span={6}>Laba Bersih : 99,222,000</Col>
+          <Col span={8}>
+            Total Transaksi : {formatNumber(paginationData.total_record, 0)}
+          </Col>
+          <Col span={8}>
+            Total Omset : {formatNumber(summaryData.total_nett_sales)}
+          </Col>
+
+          <Col span={8}>
+            Laba Kotor : {formatNumber(summaryData.total_gross_profit)}
+          </Col>
+          <Col span={8}>
+            Potongan Market Place :{" "}
+            {formatNumber(summaryData.total_potongan_marketplace)}
+          </Col>
+          <Col span={8}>
+            Laba Bersih : {formatNumber(summaryData.total_net_profit)}
+          </Col>
         </Row>
 
         <Row
