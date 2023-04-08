@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button, message, notification, Upload, Modal } from "antd";
-import Icon, { DeleteOutlined } from "@ant-design/icons";
 import _xorBy from "lodash/xorBy";
 import { UploadOutlined } from "@ant-design/icons";
 import _ from "lodash";
@@ -10,7 +9,7 @@ import { addMasterBrand } from "@/services/master";
 const ConfirmationModal = ({ title, payload, disabled }: any) => {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
-  const [acceptedFile, setAcceptedFile] = useState<any>();
+  const [acceptedFile] = useState<any>();
   const [fileList, setFileList] = useState<any>([]);
   const [loading, setLoading] = useState(false);
 

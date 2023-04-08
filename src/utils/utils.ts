@@ -30,5 +30,54 @@ export const currencyFormat = (amount: any, delimiter: number = 2) => {
 };
 
 export const formatNumber = (amount: any, delimiter: number = 2) => {
-  return amount.toLocaleString("en-us", { minimumFractionDigits: delimiter });
+  if (!amount) {
+    return "0";
+  }
+  return amount.toLocaleString("en-us", {
+    minimumFractionDigits: delimiter,
+    maximumFractionDigits: delimiter,
+  });
+};
+
+export const transformDate = (value: string = "") => {
+  if (!value) {
+    return "";
+  }
+  const splitted = value.split("-");
+  switch (splitted[1]) {
+    case "01":
+      return `${splitted[2]} Januari ${splitted[0]}`;
+    case "02":
+      return `${splitted[2]} Februari ${splitted[0]}`;
+    case "03":
+      return `${splitted[2]} Maret ${splitted[0]}`;
+    case "04":
+      return `${splitted[2]} April ${splitted[0]}`;
+    case "05":
+      return `${splitted[2]} Mei ${splitted[0]}`;
+    case "06":
+      return `${splitted[2]} Juni ${splitted[0]}`;
+    case "07":
+      return `${splitted[2]} Juli ${splitted[0]}`;
+    case "08":
+      return `${splitted[2]} Agustus ${splitted[0]}`;
+    case "09":
+      return `${splitted[2]} September ${splitted[0]}`;
+    case "10":
+      return `${splitted[2]} Oktober ${splitted[0]}`;
+    case "11":
+      return `${splitted[2]} November ${splitted[0]}`;
+    case "12":
+      return `${splitted[2]} Desember ${splitted[0]}`;
+    default:
+      return value;
+  }
+};
+
+export const transformDateDB = (value: string = "") => {
+  if (!value) {
+    return "";
+  }
+  const splitted = value.split("T");
+  return splitted[0];
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useLocation, useNavigate } from "react-router-dom";
 
 import { Breadcrumb, Card, Col, Divider, Row, Input, Button } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
@@ -12,8 +12,9 @@ import { getListAllSales } from "@/services/transactions";
 // } from "@ant-design/icons";
 import Table, { ColumnsType } from "antd/es/table";
 import { SearchOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
-import { currencyFormat, formatNumber } from "@/utils/utils";
+// import dayjs from "dayjs";
+import { formatNumber, transformDate, transformDateDB } from "@/utils/utils";
+import TablePagination from "@/components/common/TablePagination";
 
 interface DataType {
   key: string;
@@ -32,6 +33,7 @@ const ListTransactions = () => {
   const [listTransactions, setListTransactions] = useState<DataType[]>([]);
   const [summaryData, setSummaryData] = useState<any>({});
   const [paginationData, setPaginationData] = useState<any>({});
+  const [listPaging, setListPaging] = useState<number[]>([]);
 
   const today = new Date();
   const todayString = today.toISOString().slice(0, 10);
@@ -39,16 +41,45 @@ const ListTransactions = () => {
     startDate: todayString,
     endDate: todayString,
   });
-  console.log({ today, todayString });
 
   const clickTest = (a: string) => {
     console.log(a);
   };
 
-  //   const { dataTransactions, isLoading } = getTransactions();
-  const navigate = useNavigate();
+  const onPrevPagination = () => {
+    console.log({ paginationData });
+    if (paginationData.cur_page === 1) {
+      console.log("a");
+      onFetchSales(20, 1, query.startDate, query.endDate);
+    } else {
+      console.log("b", paginationData.cur_page - 1);
+      onFetchSales(
+        20,
+        paginationData.cur_page - 1,
+        query.startDate,
+        query.endDate
+      );
+    }
+  };
 
-  const currentPath = useLocation().pathname;
+  const onNextPagination = () => {
+    console.log({ paginationData });
+    if (paginationData.cur_page === paginationData.max_page) {
+      onFetchSales(20, paginationData.max_page, query.startDate, query.endDate);
+    } else {
+      onFetchSales(
+        20,
+        paginationData.cur_page + 1,
+        query.startDate,
+        query.endDate
+      );
+    }
+  };
+
+  //   const { dataTransactions, isLoading } = getTransactions();
+  // const navigate = useNavigate();
+
+  // const currentPath = useLocation().pathname;
 
   const breadCumbLabaRugi = [
     {
@@ -126,15 +157,23 @@ const ListTransactions = () => {
       const salesList = response.data.data.data || [];
       const paginationData = response.data.data.pagination || {};
       const summaryData = response.data.data.summary_data || {};
+      let pagingList = [];
 
+      for (let index = 1; index <= paginationData.max_page; index++) {
+        pagingList.push(index);
+      }
+
+      setListPaging(pagingList);
       setPaginationData(paginationData);
       setSummaryData(summaryData);
+
       setListTransactions(
         salesList.map((val: any, index: number) => {
           return {
             key: `${val.id}`,
             no: index + 1 + (paginationData.cur_page - 1) * limit,
             ...val,
+            tanggal: transformDateDB(val.tanggal),
           };
         })
       );
@@ -143,7 +182,7 @@ const ListTransactions = () => {
 
   useEffect(() => {
     console.log("called");
-    onFetchSales(20, 1, todayString, todayString);
+    onFetchSales(20, 1, query.startDate, query.endDate);
   }, []);
 
   return (
@@ -168,41 +207,56 @@ const ListTransactions = () => {
               <Input
                 type="date"
                 id="start_date"
-                defaultValue={todayString}
+                defaultValue={query.startDate}
                 value={query.startDate}
                 onChange={(e) => {
-                  console.log(e.target.value);
+                  setQuery((value) => ({
+                    ...value,
+                    startDate: e.target.value,
+                  }));
                 }}
               />
             </Col>
             <Col span={4} className="ml-1">
-              <Input type="date" id="end_date" defaultValue={todayString} />
+              <Input
+                type="date"
+                id="end_date"
+                defaultValue={query.startDate}
+                value={query.endDate}
+                onChange={(e) => {
+                  setQuery((value) => ({
+                    ...value,
+                    endDate: e.target.value,
+                  }));
+                }}
+              />
             </Col>
             <Col span={4} className="ml-1">
               <Button
                 icon={<SearchOutlined />}
                 type="primary"
-                // onClick={() =>
-                //   onFetch(
-                //     100,
-                //     1,
-                //     query?.name,
-                //     query?.id_brand_motor,
-                //     query?.id_category_motor
-                //   )
-                // }
-                onClick={() => {
-                  setQuery((p: any) => ({ ...p, startDate: "2023-04-01" }));
-                }}
+                onClick={() =>
+                  onFetchSales(20, 1, query.startDate, query.endDate)
+                }
               >
                 Tampilkan
               </Button>
             </Col>
           </Col>
         </Row>
-        <Col span={24} style={{ textAlign: "center" }}>
-          Laporan Laba Rugi <br />
-          21 Maret 2023 - 30 Maret 2023
+        <Col
+          span={24}
+          style={{
+            textAlign: "center",
+            paddingBottom: "10px",
+            paddingTop: "10px",
+          }}
+        >
+          Laporan Laba Rugi Periode :<br />
+          {`${transformDate(query.startDate)} - ${transformDate(
+            query.endDate
+          )}`}
+          <br />
         </Col>
         <Col span={24} style={{ maxHeight: "480px", overflow: "auto" }}>
           <Table
@@ -225,7 +279,7 @@ const ListTransactions = () => {
           <Col span={8}>
             Total Transaksi : {formatNumber(paginationData.total_record, 0)}
           </Col>
-          <Col span={8}>
+          <Col span={16}>
             Total Omset : {formatNumber(summaryData.total_nett_sales)}
           </Col>
 
@@ -233,59 +287,21 @@ const ListTransactions = () => {
             Laba Kotor : {formatNumber(summaryData.total_gross_profit)}
           </Col>
           <Col span={8}>
-            Potongan Market Place :{" "}
+            Potongan MarketPlace :{" "}
             {formatNumber(summaryData.total_potongan_marketplace)}
           </Col>
           <Col span={8}>
             Laba Bersih : {formatNumber(summaryData.total_net_profit)}
           </Col>
         </Row>
-
-        <Row
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginTop: "1rem",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Col
-            span={1}
-            style={{
-              border: "1px solid black",
-              textAlign: "center",
-              cursor: "pointer",
-            }}
-          >
-            {`<`}
-          </Col>
-          <Col
-            span={1}
-            style={{
-              border: "1px solid black",
-              textAlign: "center",
-              backgroundColor: "#FAA21B",
-            }}
-          >
-            1
-          </Col>
-          <Col
-            span={1}
-            style={{ border: "1px solid black", textAlign: "center" }}
-          >
-            2
-          </Col>
-          <Col
-            span={1}
-            style={{
-              border: "1px solid black",
-              textAlign: "center",
-              cursor: "pointer",
-            }}
-          >
-            {`>`}
-          </Col>
-        </Row>
+        <TablePagination
+          paginationData={paginationData}
+          onFetchSales={onFetchSales}
+          query={query}
+          onPrevPagination={onPrevPagination}
+          listPaging={listPaging}
+          onNextPagination={onNextPagination}
+        />
       </Card>
     </>
   );
