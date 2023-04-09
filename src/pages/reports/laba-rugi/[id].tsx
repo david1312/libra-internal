@@ -1,106 +1,15 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Col,
-  Divider,
-  Input,
-  message,
-  Modal,
-  Row,
-  Spin,
-} from "antd";
+import { Breadcrumb, Card, Col, Divider, Row, Spin } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
-import {
-  getDetailTransactions,
-  updateStatusTransactions,
-} from "@/services/transactions";
-
-const condition = (type: any) => {
-  let color = "";
-  let next = "";
-  let wording = "";
-
-  switch (type) {
-    case "Menunggu Pembayaran":
-      color = "#ff5b00";
-      next = "Pesanan Dibatalkan";
-      wording = "Batalkan Pesanan";
-      break;
-
-    case "Menunggu Dipasang":
-      color = "#ffbf00";
-      next = "Diproses";
-      wording = "Proses Pesanan";
-      break;
-
-    case "Diproses":
-      color = "#22bb33";
-      next = "Berhasil";
-      wording = "Selesaikan Pesanan";
-      break;
-
-    default:
-      color = "transparent";
-      next = "Selesaikan Pesanan";
-      wording = "";
-
-      break;
-  }
-  return {
-    color,
-    next,
-    wording,
-  };
-};
 
 const detailPemesanan = () => {
   const params = useParams();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [detailPemesanan, setDetailPemesanan] = useState<any>({});
-  const [confirmation, setConfirmation] = useState(false);
-  const [validatePayment, setValidatePayment] = useState(false);
-  const [extraNotes, setExtraNotes] = useState("");
-
-  const onFetch = async () => {
-    setLoading(true);
-    const payload = {
-      invoice_id: params?.id,
-    };
-    try {
-      const response = await getDetailTransactions(payload);
-      setDetailPemesanan(response.data.data);
-      setLoading(false);
-    } catch (error) {
-      message.error("failed to get data");
-      setLoading(false);
-    }
-  };
-
-  const onProcess = async (status: any) => {
-    setLoading(true);
-    const payload = {
-      invoice_id: params?.id,
-      status: status,
-      notes: extraNotes,
-    };
-    try {
-      const response = await updateStatusTransactions(payload);
-      setDetailPemesanan(response.data.data);
-      message.success("Pemesanan successfully update");
-      setLoading(false);
-      navigate("/pemesanan/pemasangan");
-    } catch (error) {
-      message.error("failed to get data");
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
+    setLoading(false);
     // onFetch();
   }, []);
   const breadCumbLabaRugiDetail = [

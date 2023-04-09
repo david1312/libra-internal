@@ -1,58 +1,9 @@
 import { useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-import { Breadcrumb, Button, Card, Divider, Select } from "antd";
+import { Breadcrumb, Card, Divider } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import TableComponent from "@/components/TableComponent";
-
-import useTalent from "@/hooks/useStorage";
-import LoadingPage from "@/components/loading/LoadingPage";
-import moment from "moment";
-
-const searchByNameColumns = [
-  {
-    title: "DATE INTAKE",
-    dataIndex: "date",
-    key: "date",
-    align: "center",
-  },
-  {
-    title: "PROGRAM NAME",
-    dataIndex: "program",
-    key: "program",
-    align: "center",
-  },
-  {
-    title: "LOCATION",
-    dataIndex: "location",
-    key: "location",
-    align: "center",
-  },
-  {
-    title: "POSITION",
-    dataIndex: "position",
-    key: "position",
-    align: "center",
-  },
-  {
-    title: "BUSINESS GROUP",
-    dataIndex: "business",
-    key: "business",
-    align: "center",
-  },
-  {
-    title: "DIVISION",
-    dataIndex: "division",
-    key: "division",
-    align: "center",
-  },
-  {
-    title: "GRADE",
-    dataIndex: "grade",
-    key: "grade",
-    align: "center",
-  },
-];
 
 const searchByProgramColumns = [
   {
@@ -124,14 +75,7 @@ const searchByProgramColumns = [
 ];
 
 const EDPPage = () => {
-  const { Option } = Select;
-
-  const currentPath = useLocation().pathname;
-  let navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState("1");
-
-  const { get } = useTalent();
-  const programs = get("master.executive_dev_enum", []);
+  const [currentPage] = useState("1");
 
   return (
     <>

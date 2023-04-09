@@ -1,35 +1,11 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { Breadcrumb, Button, Card, Divider, Form, Input, message } from "antd";
+import { Breadcrumb, Button, Card, Divider, Input, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
-import { addMasterBrand, addMasterTireBrand } from "@/services/master";
+import { addMasterTireBrand } from "@/services/master";
 import FileUploader from "@/components/FileUploader";
 import _isEmpty from "lodash/isEmpty";
-
-const columns = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    key: "id",
-  },
-  {
-    title: "NAME",
-    dataIndex: "nama",
-    key: "nama",
-  },
-  {
-    title: "LOGO",
-    dataIndex: "icon",
-    key: "icon",
-    align: "center",
-    render: (_: any, record: any) => (
-      <>
-        <img width="81px" src={record?.icon}></img>
-      </>
-    ),
-  },
-];
 
 const BrandBan = () => {
   const [form, setForm] = useState<any>({});

@@ -1,7 +1,5 @@
-import { authState } from "@/atoms/authState";
 import LayoutComponent from "@/components/LayoutComponent";
 import React, { ReactNode, useEffect } from "react";
-import { useRecoilState } from "recoil";
 import Cookies from "js-cookie";
 import { getAnomToken } from "@/services/api";
 import { useLocation, useNavigate } from "react-router-dom";

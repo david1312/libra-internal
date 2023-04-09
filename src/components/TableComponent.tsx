@@ -1,6 +1,5 @@
 import { Table } from "antd";
 import { useState } from "react";
-import LoadingPage from "./loading/LoadingPage";
 
 const TableComponent = (props: {
   columns: any[] | undefined;

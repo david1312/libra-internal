@@ -1,6 +1,4 @@
 import { ComponentType } from "react";
-import { useRecoilValue } from "recoil";
-import { authState } from "@/atoms/authState";
 import PageNotFound from "@/pages/_404";
 import Cookies from "js-cookie";
 

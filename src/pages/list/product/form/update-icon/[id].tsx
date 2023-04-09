@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 
-import { Breadcrumb, Button, Card, Divider, Image, Input, message } from "antd";
+import { Breadcrumb, Button, Card, Divider, Image, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import _isEmpty from "lodash/isEmpty";
 import FileUploader from "@/components/FileUploader";

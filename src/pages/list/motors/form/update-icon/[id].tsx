@@ -3,33 +3,9 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 import { Breadcrumb, Button, Card, Divider, Input, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
-import { getListMotors, updateIconMotor } from "@/services/master";
+import { updateIconMotor } from "@/services/master";
 import _isEmpty from "lodash/isEmpty";
 import FileUploader from "@/components/FileUploader";
-
-const columns = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    key: "id",
-  },
-  {
-    title: "NAME",
-    dataIndex: "nama",
-    key: "nama",
-  },
-  {
-    title: "LOGO",
-    dataIndex: "icon",
-    key: "icon",
-    align: "center",
-    render: (_: any, record: any) => (
-      <>
-        <img width="81px" src={record?.icon}></img>
-      </>
-    ),
-  },
-];
 
 const BrandBan = () => {
   const params = useParams();

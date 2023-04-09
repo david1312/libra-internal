@@ -2,8 +2,8 @@ import axios from "axios";
 import { notification } from "antd";
 import Cookies from "js-cookie";
 
-// const base = "https://api.libra-internal-app.com/v1";
-const base = "http://localhost:8097/v1";
+const base = "https://api.libra-internal-app.com/v1";
+// const base = "http://localhost:8097/v1";
 
 const FORM_DATA = [
   "/list/brand-tire/form",

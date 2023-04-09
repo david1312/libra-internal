@@ -1,13 +1,9 @@
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import LoginPage from "./login";
-import { Card, Col, Row, Statistic, Divider, Result } from "antd";
+import { Result } from "antd";
 import { getProfile } from "@/services/user";
 import { useEffect } from "react";
 import useStorage from "@/hooks/useStorage";
-import VerticalChart from "@/components/charts/VerticalChart";
-import TotalHiredDoughnut from "@/components/charts/Doughnut";
-import Chart from "@/components/charts/Chart";
-import Meta from "antd/lib/card/Meta";
 
 function HomePage() {
   const { set } = useStorage();
