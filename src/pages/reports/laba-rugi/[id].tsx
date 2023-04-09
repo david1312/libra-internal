@@ -1,16 +1,58 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Breadcrumb, Card, Col, Divider, Row, Spin } from "antd";
+import {
+  Breadcrumb,
+  Card,
+  Col,
+  Divider,
+  Row,
+  Spin,
+  Typography,
+  message,
+} from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
+import { getSalesByInvoice } from "@/services/transactions";
+import { DataTypeInvoice, INVOICE_DATA } from "@/interfaces/interface_sales";
+import { get } from "lodash";
+import { TYPE_DATA } from "@/constants/common";
+import { formatNumber, transformDate, transformDateDB } from "@/utils/utils";
+import Table, { ColumnsType } from "antd/es/table";
 
 const detailPemesanan = () => {
   const params = useParams();
   const [loading, setLoading] = useState(false);
+  const [invoice, setInvoice] = useState<any>({});
+  const [listItems, setListItems] = useState<DataTypeInvoice[]>([]);
+
+  const onFetchInvoice = async () => {
+    setLoading(true);
+    const payload = {
+      no_pesanan: params?.id,
+    };
+    try {
+      const response = await getSalesByInvoice(payload);
+      const listItemsData = get(response, "data.data.item_list", []);
+      setInvoice(response.data.data);
+      setListItems(
+        listItemsData.map((val: any, index: number) => {
+          return {
+            key: `tableInvoiceItem${index}`,
+            no: index + 1,
+            ...val,
+          };
+        })
+      );
+      console.log(response);
+      setLoading(false);
+    } catch (error) {
+      message.error("failed to get data");
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLoading(false);
-    // onFetch();
+    onFetchInvoice();
   }, []);
   const breadCumbLabaRugiDetail = [
     {
@@ -18,13 +60,94 @@ const detailPemesanan = () => {
     },
     {
       title: "Laporan Laba Rugi Seluruh Faktur",
+      href: "/reports/laba-rugi",
     },
     {
       title: "Detail Sebuah Faktur",
     },
   ];
 
-  if (loading) return <Spin />;
+  const columns: ColumnsType<DataTypeInvoice> = [
+    {
+      title: "No",
+      dataIndex: "no",
+      key: "no",
+    },
+    {
+      title: "SKU",
+      dataIndex: "sku",
+      key: "sku",
+    },
+    {
+      title: "Nama",
+      dataIndex: "nama_barang",
+      key: "nama_barang",
+    },
+    {
+      title: "HPP",
+      dataIndex: "hpp_satuan",
+      key: "hpp_satuan",
+      render: (text) => formatNumber(text),
+    },
+    {
+      title: "Harga Jual Satuan",
+      dataIndex: "harga_satuan",
+      key: "harga_satuan",
+      render: (text) => formatNumber(text),
+    },
+    {
+      title: "Qty",
+      dataIndex: "qty",
+      key: "qty",
+      render: (text) => formatNumber(text),
+    },
+    {
+      title: "Total Harga",
+      dataIndex: "total_harga",
+      key: "total_harga",
+      render: (text) => formatNumber(text),
+    },
+    {
+      title: "Diskon Persen",
+      dataIndex: "diskon_percent",
+      key: "diskon_percent",
+      render: (text) => `${formatNumber(text)} %`,
+    },
+    {
+      title: "Total Diskon",
+      dataIndex: "diskon",
+      key: "diskon",
+      render: (text) => formatNumber(text),
+    },
+    {
+      title: "Harga Final",
+      dataIndex: "harga_final",
+      key: "harga_final",
+      render: (text) => formatNumber(text),
+    },
+    {
+      title: "Total HPP",
+      dataIndex: "total_hpp",
+      key: "diskon",
+      render: (text) => formatNumber(text),
+    },
+    {
+      title: "Gross Profit",
+      dataIndex: "gross_profit",
+      key: "gross_profit",
+      render: (text) => formatNumber(text),
+    },
+  ];
+
+  if (loading)
+    return (
+      <>
+        <div className="relative center">
+          <Spin /> <br />
+          <Typography.Text>Mohon Tunggu Sedang Memuat Data ...</Typography.Text>
+        </div>
+      </>
+    );
   return (
     <>
       <Breadcrumb items={breadCumbLabaRugiDetail} />
@@ -45,107 +168,35 @@ const detailPemesanan = () => {
             Detail Faktur {params.id}
           </Col>
           <Divider style={{ marginTop: "15px" }} />
-
-          <Col span={4} className="f-bold f-12">
-            No Invoice
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            No Ref
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Tanggal
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Nama Toko
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Channel
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Pelanggan
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-
-          <Col span={4} className="f-bold f-12">
-            Status
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Sub Total
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Diskon
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Diskon Lainnya
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Biaya Lain
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-
-          <Col span={4} className="f-bold f-12">
-            Harga Jual / Net Sales
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            HPP
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Gross Profit
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Fee Marketplace
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
-          <Col span={4} className="f-bold f-12">
-            Laba Bersih
-          </Col>
-          <Col span={20} className="f-bold f-12">
-            : {params.id}
-          </Col>
+          {INVOICE_DATA.map((val) => {
+            return (
+              <React.Fragment key={`invoice${val.value}`}>
+                <Col span={4} className="f-bold f-12">
+                  {val.title}
+                </Col>
+                <Col span={20} className="f-bold f-12">
+                  :{" "}
+                  {val.type === TYPE_DATA.TEXT
+                    ? get(invoice, `sales_detail.${val.value}`, "-")
+                    : val.type === TYPE_DATA.MONEY
+                    ? formatNumber(
+                        get(invoice, `sales_detail.${val.value}`, 0),
+                        2
+                      )
+                    : transformDate(
+                        transformDateDB(
+                          get(invoice, `sales_detail.${val.value}`, "")
+                        )
+                      )}
+                </Col>
+              </React.Fragment>
+            );
+          })}
         </Row>
         <Divider />
+        <Col span={24} style={{ maxHeight: "600px", overflow: "auto" }}>
+          <Table columns={columns} dataSource={listItems} pagination={false} />
+        </Col>
       </Card>
     </>
   );

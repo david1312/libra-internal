@@ -50,3 +50,11 @@ export async function getListAllSales(payload?: any) {
     method: "POST",
   });
 }
+
+export async function getSalesByInvoice(payload?: any) {
+  return await api.request<any, any>({
+    url: ENDPOINT.GET_SALES_BY_INVOICE,
+    data: JSON.stringify(payload),
+    method: "POST",
+  });
+}

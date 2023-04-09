@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { Breadcrumb, Card, Col, Divider, Row, Input, Button } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import { getListAllSales } from "@/services/transactions";
-// import {
-//   FieldTimeOutlined,
-//   LoadingOutlined,
-//   CheckCircleOutlined,
-//   CloseCircleOutlined,
-// } from "@ant-design/icons";
 import Table, { ColumnsType } from "antd/es/table";
 import { SearchOutlined } from "@ant-design/icons";
-// import dayjs from "dayjs";
 import { formatNumber, transformDate, transformDateDB } from "@/utils/utils";
 import TablePagination from "@/components/common/TablePagination";
 
@@ -26,7 +18,6 @@ interface DataType {
   gross_profit: number;
   potongan_marketplace: number;
   net_profit: number;
-  // tags: string[];
 }
 
 const ListTransactions = () => {
@@ -80,8 +71,6 @@ const ListTransactions = () => {
       );
     }
   };
-
-  //   const { dataTransactions, isLoading } = getTransactions();
 
   const breadCumbLabaRugi = [
     {

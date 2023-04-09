@@ -111,3 +111,7 @@ body {
 .paging-clickable {
   cursor: pointer;
 }
+
+.relative {
+  position: relative;
+}
