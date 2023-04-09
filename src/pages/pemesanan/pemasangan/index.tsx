@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { Breadcrumb, Button, Card, Divider, Tooltip } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
@@ -126,8 +126,6 @@ const ListTransactions = () => {
       ),
     },
   ];
-
-  const currentPath = useLocation().pathname;
 
   const onFetch = async (limit?: any, page?: any) => {
     const payload = {

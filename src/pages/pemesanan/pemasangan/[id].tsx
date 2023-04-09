@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react";
-import {
-  Navigate,
-  NavLink,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 import {
   Breadcrumb,
   Button,
   Card,
   Divider,
-  Image,
   Input,
   message,
   Modal,
@@ -23,13 +16,6 @@ import {
   getDetailTransactions,
   updateStatusTransactions,
 } from "@/services/transactions";
-import {
-  FieldTimeOutlined,
-  LoadingOutlined,
-  CheckCircleOutlined,
-  EyeOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
 
 const condition = (type: any) => {
   let color = "";

@@ -5,10 +5,12 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Col,
   Divider,
   Input,
   message,
   Modal,
+  Row,
   Spin,
 } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
@@ -99,173 +101,143 @@ const detailPemesanan = () => {
   };
 
   useEffect(() => {
-    onFetch();
+    // onFetch();
   }, []);
+  const breadCumbLabaRugiDetail = [
+    {
+      title: "Laporan",
+    },
+    {
+      title: "Laporan Laba Rugi Seluruh Faktur",
+    },
+    {
+      title: "Detail Sebuah Faktur",
+    },
+  ];
 
   if (loading) return <Spin />;
   return (
     <>
-      <Breadcrumb>
-        <Breadcrumb.Item>Pemesanan</Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <NavLink to="/pemesanan/pemasangan">Pemasangan Ban</NavLink>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Detail Pemesanan</Breadcrumb.Item>
-      </Breadcrumb>
+      <Breadcrumb items={breadCumbLabaRugiDetail} />
+
       <Divider
         style={{ backgroundColor: "gray", marginTop: 15, marginBottom: 10 }}
       />
 
-      <Card style={{ width: "100%", borderRadius: 10, marginTop: 16 }}>
-        <table style={{ width: "100%" }}>
-          <tr>
-            <td colSpan={2}>
-              <h2 className="m-0 text-[#a70000] font-bold">Detail Pemesanan</h2>
-            </td>
-          </tr>
-          <tr>
-            <td className="m-0 text-[#000] font-bold">Invoice ID</td>
-            <td>: {detailPemesanan?.invoice_id}</td>
-          </tr>
-          <tr>
-            <td className="m-0 text-[#000] font-bold">Schedule</td>
-            <td>: {detailPemesanan?.installation_time}</td>
-          </tr>
-          <tr>
-            <td className="m-0 text-[#000] font-bold">Outlet</td>
-            <td>: {detailPemesanan?.outlet_name}</td>
-          </tr>
-          <tr>
-            <td className="m-0 text-[#000] font-bold">Address</td>
-            <td>: {detailPemesanan?.outlet_address}</td>
-          </tr>
-          <tr>
-            <td className="m-0 text-[#000] font-bold">Phone Outlet</td>
-            <td>: {detailPemesanan?.outlet_cs_number}</td>
-          </tr>
-          <tr>
-            <td className="m-0 text-[#000] font-bold">Payment Method</td>
-            <td>: {detailPemesanan?.payment_method}</td>
-          </tr>
-          <tr>
-            <td className="m-0 text-[#000] font-bold">Payment Method Desc</td>
-            <td>: {detailPemesanan?.payment_method_desc}</td>
-          </tr>
-          <tr>
-            <td className="m-0 text-[#000] font-bold">List Produk</td>
-            <td>:</td>
-          </tr>
-          <tr>
-            <td colSpan={2}>
-              <table
-                width={"100%"}
-                style={{ border: "1px solid" }}
-                cellPadding="8"
-              >
-                <tr>
-                  <th>Nama Barang</th>
-                  <th>Jenis Ban</th>
-                  <th>Ukuran</th>
-                  <th>Jumlah</th>
-                  <th>Harga Satuan</th>
-                  <th>Harga Total</th>
-                </tr>
-                <tr>
-                  <td colSpan={6}>
-                    <hr />
-                  </td>
-                </tr>
-
-                {detailPemesanan?.list_product?.map(
-                  (e: any, i: number, row: any) => {
-                    return (
-                      <>
-                        <tr>
-                          <td>{e.nama_barang}</td>
-                          <td>{e.jenis_ban}</td>
-                          <td>{e.ukuran}</td>
-                          <td>{e.qty}</td>
-                          <td>{e.harga_satuan_formatted}</td>
-                          <td>{e.harga_total_formatted}</td>
-                        </tr>
-                        {row?.length !== i + 1 && (
-                          <tr>
-                            <td colSpan={6}>
-                              <hr />
-                            </td>
-                          </tr>
-                        )}
-                      </>
-                    );
-                  }
-                )}
-              </table>
-            </td>
-          </tr>
-        </table>
-        <Divider />
-        <span style={{ float: "right" }}>
-          {detailPemesanan?.status === "Menunggu Pembayaran" && (
-            <Button
-              style={{
-                backgroundColor: "#03A10E",
-                color: "#fff",
-                marginRight: 16,
-              }}
-              onClick={() => {
-                setValidatePayment(true);
-                setConfirmation(true);
-                return;
-              }}
-            >
-              Validasi Pembayaran
-            </Button>
-          )}
-
-          <Button
-            style={{
-              backgroundColor: condition(detailPemesanan?.status)?.color,
-              color: "#fff",
-            }}
-            onClick={() => {
-              setConfirmation(true);
-              return;
-            }}
-          >
-            {condition(detailPemesanan?.status)?.wording}
-          </Button>
-        </span>
-      </Card>
-      <Modal
-        title={`Apakah Anda Yakin - ${
-          validatePayment
-            ? "Validasi Pembayaran"
-            : condition(detailPemesanan?.status)?.next
-        }`}
-        open={confirmation}
-        onOk={() => {
-          if (validatePayment) {
-            onProcess("Menunggu Dipasang");
-          } else {
-            onProcess(condition(detailPemesanan?.status)?.next);
-          }
+      <Card
+        style={{
+          width: "100%",
+          borderRadius: 10,
+          marginTop: 16,
         }}
-        confirmLoading={loading}
-        onCancel={() => setConfirmation(false)}
-        width={1000}
       >
-        {condition(detailPemesanan?.status)?.next === "Pesanan Dibatalkan" && (
-          <>
-            <strong>Masukkan Alasan Anda</strong>
-            <br />
-            <Input
-              name="reason"
-              onChange={(e) => setExtraNotes(e.target.value)}
-              placeholder="Tulis disini"
-            />
-          </>
-        )}
-      </Modal>
+        <Row>
+          <Col span={24} className="f-bold c-primary f-14">
+            Detail Faktur {params.id}
+          </Col>
+          <Divider style={{ marginTop: "15px" }} />
+
+          <Col span={4} className="f-bold f-12">
+            No Invoice
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            No Ref
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Tanggal
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Nama Toko
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Channel
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Pelanggan
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+
+          <Col span={4} className="f-bold f-12">
+            Status
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Sub Total
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Diskon
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Diskon Lainnya
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Biaya Lain
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+
+          <Col span={4} className="f-bold f-12">
+            Harga Jual / Net Sales
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            HPP
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Gross Profit
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Fee Marketplace
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+          <Col span={4} className="f-bold f-12">
+            Laba Bersih
+          </Col>
+          <Col span={20} className="f-bold f-12">
+            : {params.id}
+          </Col>
+        </Row>
+        <Divider />
+      </Card>
     </>
   );
 };

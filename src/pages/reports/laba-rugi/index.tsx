@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Breadcrumb, Card, Col, Divider, Row, Input, Button } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
@@ -30,20 +30,25 @@ interface DataType {
 }
 
 const ListTransactions = () => {
+  const navigate = useNavigate();
+  const currentPath = useLocation().pathname;
+
   const [listTransactions, setListTransactions] = useState<DataType[]>([]);
   const [summaryData, setSummaryData] = useState<any>({});
   const [paginationData, setPaginationData] = useState<any>({});
   const [listPaging, setListPaging] = useState<number[]>([]);
 
-  const today = new Date();
-  const todayString = today.toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000);
+  const yesterdayString = yesterday.toISOString().slice(0, 10);
   const [query, setQuery] = useState({
-    startDate: todayString,
-    endDate: todayString,
+    startDate: yesterdayString,
+    endDate: yesterdayString,
+    noPesanan: "",
   });
 
-  const clickTest = (a: string) => {
-    console.log(a);
+  const detailInvoice = (idInvoice: string) => {
+    console.log(currentPath);
+    navigate(`${currentPath}/${idInvoice}`);
   };
 
   const onPrevPagination = () => {
@@ -77,9 +82,6 @@ const ListTransactions = () => {
   };
 
   //   const { dataTransactions, isLoading } = getTransactions();
-  // const navigate = useNavigate();
-
-  // const currentPath = useLocation().pathname;
 
   const breadCumbLabaRugi = [
     {
@@ -100,7 +102,7 @@ const ListTransactions = () => {
       title: "Invoice",
       dataIndex: "no_pesanan",
       key: "sales_invoice",
-      render: (text) => <a onClick={() => clickTest(text)}>{text}</a>,
+      render: (text) => <a onClick={() => detailInvoice(text)}>{text}</a>,
     },
     {
       title: "Tanggal",
@@ -142,15 +144,14 @@ const ListTransactions = () => {
     limit: number = 20,
     page: number = 1,
     start_date?: string,
-    end_date?: string,
-    no_pesanan?: string
+    end_date?: string
   ) => {
     const payload = {
       limit: limit || 20,
       page: page || 1,
       start_date: start_date,
       end_date: end_date,
-      no_pesanan: no_pesanan || "",
+      no_pesanan: query.noPesanan || "",
     };
     try {
       const response = await getListAllSales(payload);
@@ -201,6 +202,9 @@ const ListTransactions = () => {
             <Col span={4} className="f-14 f-bold ml-1">
               Tanggal Akhir
             </Col>
+            <Col span={4} className="f-14 f-bold ml-1">
+              No Pesanan / Invoice
+            </Col>
           </Col>
           <Col span={24} className="filter-bar">
             <Col span={4}>
@@ -227,6 +231,20 @@ const ListTransactions = () => {
                   setQuery((value) => ({
                     ...value,
                     endDate: e.target.value,
+                  }));
+                }}
+              />
+            </Col>
+            <Col span={4} className="ml-1">
+              <Input
+                type="text"
+                id="no_pesanan"
+                defaultValue={query.noPesanan}
+                value={query.noPesanan}
+                onChange={(e) => {
+                  setQuery((value) => ({
+                    ...value,
+                    noPesanan: e.target.value,
                   }));
                 }}
               />
@@ -276,23 +294,19 @@ const ListTransactions = () => {
           }}
           className="f-bold"
         >
-          <Col span={8}>
-            Total Transaksi : {formatNumber(paginationData.total_record, 0)}
-          </Col>
-          <Col span={16}>
-            Total Omset : {formatNumber(summaryData.total_nett_sales)}
-          </Col>
+          <Col span={4}>Total Transaksi</Col>
+          <Col span={8}>: {formatNumber(paginationData.total_record, 0)}</Col>
+          <Col span={4}>Total Omset Penjualan</Col>
+          <Col span={8}>: {formatNumber(summaryData.total_nett_sales)}</Col>
 
+          <Col span={4}>Laba Kotor Penjualan</Col>
+          <Col span={8}>: {formatNumber(summaryData.total_gross_profit)}</Col>
+          <Col span={4}>Total Fee MarketPlace</Col>
           <Col span={8}>
-            Laba Kotor : {formatNumber(summaryData.total_gross_profit)}
+            : {formatNumber(summaryData.total_potongan_marketplace)}
           </Col>
-          <Col span={8}>
-            Potongan MarketPlace :{" "}
-            {formatNumber(summaryData.total_potongan_marketplace)}
-          </Col>
-          <Col span={8}>
-            Laba Bersih : {formatNumber(summaryData.total_net_profit)}
-          </Col>
+          <Col span={4}>Laba Bersih Penjualan</Col>
+          <Col span={8}>: {formatNumber(summaryData.total_net_profit)}</Col>
         </Row>
         <TablePagination
           paginationData={paginationData}
