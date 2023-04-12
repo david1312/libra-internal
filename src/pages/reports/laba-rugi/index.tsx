@@ -38,17 +38,13 @@ const ListTransactions = () => {
   });
 
   const detailInvoice = (idInvoice: string) => {
-    console.log(currentPath);
     navigate(`${currentPath}/${idInvoice}`);
   };
 
   const onPrevPagination = () => {
-    console.log({ paginationData });
     if (paginationData.cur_page === 1) {
-      console.log("a");
       onFetchSales(20, 1, query.startDate, query.endDate);
     } else {
-      console.log("b", paginationData.cur_page - 1);
       onFetchSales(
         20,
         paginationData.cur_page - 1,
@@ -59,7 +55,6 @@ const ListTransactions = () => {
   };
 
   const onNextPagination = () => {
-    console.log({ paginationData });
     if (paginationData.cur_page === paginationData.max_page) {
       onFetchSales(20, paginationData.max_page, query.startDate, query.endDate);
     } else {
@@ -171,7 +166,6 @@ const ListTransactions = () => {
   };
 
   useEffect(() => {
-    console.log("called");
     onFetchSales(20, 1, query.startDate, query.endDate);
   }, []);
 
@@ -283,19 +277,19 @@ const ListTransactions = () => {
           }}
           className="f-bold"
         >
-          <Col span={4}>Total Transaksi</Col>
-          <Col span={8}>: {formatNumber(paginationData.total_record, 0)}</Col>
-          <Col span={4}>Total Omset Penjualan</Col>
-          <Col span={8}>: {formatNumber(summaryData.total_nett_sales)}</Col>
+          <Col span={10}>Total Transaksi</Col>
+          <Col span={14}>: {formatNumber(paginationData.total_record, 0)}</Col>
+          <Col span={10}>Total Omset Penjualan</Col>
+          <Col span={14}>: {formatNumber(summaryData.total_nett_sales)}</Col>
 
-          <Col span={4}>Laba Kotor Penjualan</Col>
-          <Col span={8}>: {formatNumber(summaryData.total_gross_profit)}</Col>
-          <Col span={4}>Total Fee MarketPlace</Col>
-          <Col span={8}>
+          <Col span={10}>Laba Kotor / Sebelum Fee Marketplace</Col>
+          <Col span={14}>: {formatNumber(summaryData.total_gross_profit)}</Col>
+          <Col span={10}>Total Fee MarketPlace</Col>
+          <Col span={14}>
             : {formatNumber(summaryData.total_potongan_marketplace)}
           </Col>
-          <Col span={4}>Laba Bersih Penjualan</Col>
-          <Col span={8}>: {formatNumber(summaryData.total_net_profit)}</Col>
+          <Col span={10}>Laba Penjualan</Col>
+          <Col span={14}>: {formatNumber(summaryData.total_net_profit)}</Col>
         </Row>
         <TablePagination
           paginationData={paginationData}

@@ -67,7 +67,7 @@ export const INVOICE_DATA = [
     type: TYPE_DATA.MONEY,
   },
   {
-    title: "Gross Profit",
+    title: "Laba Kotor / Sebelum Fee Marketplace",
     value: "gross_profit",
     type: TYPE_DATA.MONEY,
   },
@@ -77,7 +77,7 @@ export const INVOICE_DATA = [
     type: TYPE_DATA.MONEY,
   },
   {
-    title: "Laba Bersih",
+    title: "Laba Penjualan",
     value: "net_profit",
     type: TYPE_DATA.MONEY,
   },

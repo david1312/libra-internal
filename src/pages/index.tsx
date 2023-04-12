@@ -16,7 +16,7 @@ function HomePage() {
     <div className="site-statistic-demo-card">
       <Result
         status="info"
-        title="Selamat Datang Di Aplikasi Dashboard Internal Semesta Ban"
+        title="Selamat Datang Di Aplikasi Dashboard Internal Libra"
         subTitle="Menu aplikasi bisa anda lihat pada menu bar yang ada di sebelah kiri layar anda"
       />
       {/* <Row gutter={16}>

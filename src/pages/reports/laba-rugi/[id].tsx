@@ -43,7 +43,6 @@ const detailPemesanan = () => {
           };
         })
       );
-      console.log(response);
       setLoading(false);
     } catch (error) {
       message.error("failed to get data");
@@ -132,7 +131,7 @@ const detailPemesanan = () => {
       render: (text) => formatNumber(text),
     },
     {
-      title: "Gross Profit",
+      title: "Laba Kotor",
       dataIndex: "gross_profit",
       key: "gross_profit",
       render: (text) => formatNumber(text),
