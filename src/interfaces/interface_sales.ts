@@ -98,3 +98,20 @@ export interface DataTypeInvoice {
   total_hpp: number;
   gross_profit: number;
 }
+
+export interface DataTypeSales {
+  key: string;
+  no: number;
+  no_pesanan: string;
+  tanggal: string;
+  channel: string;
+  nett_sales: number;
+  gross_profit: number;
+  potongan_marketplace: number;
+  net_profit: number;
+}
+
+export interface SelectDataType {
+  value: string;
+  label: string;
+}

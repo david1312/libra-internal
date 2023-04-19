@@ -38,5 +38,11 @@ export enum ENDPOINT {
   JUBELIO_TEST = "/reports/sales-list/revenue_detail/?date_from=2023-02-28T17:00:00.000Z&date_to=2023-03-03T16:59:59.999Z&tz=Asia/Jakarta",
 
   GET_ALL_SALES = "/merchant/reports/sales/get/all",
+  GET_ALL_LOSS_SALES = "/merchant/reports/sales/get/loss-all",
   GET_SALES_BY_INVOICE = "/merchant/reports/sales/get/detail",
+}
+
+export interface SelectDataType {
+  value: string;
+  label: string;
 }

@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  Breadcrumb,
-  Card,
-  Col,
-  Divider,
-  Row,
-  Spin,
-  Typography,
-  message,
-} from "antd";
+import { Breadcrumb, Card, Col, Divider, Row, message } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
 import { getSalesByInvoice } from "@/services/transactions";
 import { DataTypeInvoice, INVOICE_DATA } from "@/interfaces/interface_sales";
@@ -20,7 +11,7 @@ import { formatNumber, transformDate, transformDateDB } from "@/utils/utils";
 import Table, { ColumnsType } from "antd/es/table";
 import LoadingData from "@/components/loading/LoadingData";
 
-const detailPemesanan = () => {
+const PageSalesLossDetail = () => {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [invoice, setInvoice] = useState<any>({});
@@ -194,4 +185,4 @@ const detailPemesanan = () => {
   );
 };
 
-export default withProtectedPage(detailPemesanan);
+export default withProtectedPage(PageSalesLossDetail);

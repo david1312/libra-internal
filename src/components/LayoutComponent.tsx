@@ -44,6 +44,14 @@ const LayoutComponent = (props: any) => {
         <NavLink to="/reports/laba-rugi">Laba Rugi Seluruh Faktur</NavLink>,
         "item-2-sub-1"
       ),
+      getItem(
+        <NavLink to="/reports/faktur-rugi">Faktur Penjualan Rugi</NavLink>,
+        "item-2-sub-2"
+      ),
+      getItem(
+        <NavLink to="/admin-menu/">Update Fee Faktur Penjualan</NavLink>,
+        "item-2-sub-3"
+      ),
     ]),
     { type: "divider" },
   ];
