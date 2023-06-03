@@ -2,7 +2,12 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import { NavLink, useLocation } from "react-router-dom";
 import { Avatar, Button, Layout, Menu, Modal, Card, MenuProps } from "antd";
-import { HomeOutlined, ProjectOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  LockOutlined,
+  ProjectOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import useStorage from "@/hooks/useStorage";
 
 const { Header, Content, Sider } = Layout;
@@ -48,9 +53,11 @@ const LayoutComponent = (props: any) => {
         <NavLink to="/reports/faktur-rugi">Faktur Penjualan Rugi</NavLink>,
         "item-2-sub-2"
       ),
+    ]),
+    getItem("Menu Admin", "item-3", <LockOutlined />, [
       getItem(
-        <NavLink to="/admin-menu/">Update Fee Faktur Penjualan</NavLink>,
-        "item-2-sub-3"
+        <NavLink to="/admin-menu/">Ubah Fee Marketplace</NavLink>,
+        "item-3-sub-1"
       ),
     ]),
     { type: "divider" },
