@@ -60,6 +60,16 @@ const LayoutComponent = (props: any) => {
         "item-3-sub-1"
       ),
     ]),
+    getItem("Persediaan / Stock", "item-6", <ProjectOutlined />, [
+      getItem(
+        <NavLink to="/persediaan/laba-rugi">Riwayat Penyesuaian</NavLink>,
+        "item-2-sub-1"
+      ),
+      getItem(
+        <NavLink to="/persediaan/faktur-rugi">Tambah Penyesuaian</NavLink>,
+        "item-2-sub-2"
+      ),
+    ]),
     { type: "divider" },
   ];
 
@@ -132,7 +142,9 @@ const LayoutComponent = (props: any) => {
             }}
             defaultSelectedKeys={[selectedKeys[0]]}
             defaultOpenKeys={[openKeys]}
-            items={items}
+            items={items.filter((val) => {
+              return val.key !== "item-4";
+            })}
           />
         </Sider>
         <Layout

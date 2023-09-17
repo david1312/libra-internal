@@ -108,6 +108,7 @@ export interface DataTypeSales {
   nett_sales: number;
   gross_profit: number;
   potongan_marketplace: number;
+  potongan_marketplace_numeric: number;
   net_profit: number;
 }
 
