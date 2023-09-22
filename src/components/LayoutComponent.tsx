@@ -2,7 +2,12 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import { NavLink, useLocation } from "react-router-dom";
 import { Avatar, Button, Layout, Menu, Modal, Card, MenuProps } from "antd";
-import { HomeOutlined, ProjectOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  LockOutlined,
+  ProjectOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import useStorage from "@/hooks/useStorage";
 
 const { Header, Content, Sider } = Layout;
@@ -43,6 +48,26 @@ const LayoutComponent = (props: any) => {
       getItem(
         <NavLink to="/reports/laba-rugi">Laba Rugi Seluruh Faktur</NavLink>,
         "item-2-sub-1"
+      ),
+      getItem(
+        <NavLink to="/reports/faktur-rugi">Faktur Penjualan Rugi</NavLink>,
+        "item-2-sub-2"
+      ),
+    ]),
+    getItem("Menu Admin", "item-3", <LockOutlined />, [
+      getItem(
+        <NavLink to="/admin-menu/">Ubah Fee Marketplace</NavLink>,
+        "item-3-sub-1"
+      ),
+    ]),
+    getItem("Persediaan / Stock", "item-6", <ProjectOutlined />, [
+      getItem(
+        <NavLink to="/persediaan/laba-rugi">Riwayat Penyesuaian</NavLink>,
+        "item-2-sub-1"
+      ),
+      getItem(
+        <NavLink to="/persediaan/faktur-rugi">Tambah Penyesuaian</NavLink>,
+        "item-2-sub-2"
       ),
     ]),
     { type: "divider" },
@@ -117,7 +142,9 @@ const LayoutComponent = (props: any) => {
             }}
             defaultSelectedKeys={[selectedKeys[0]]}
             defaultOpenKeys={[openKeys]}
-            items={items}
+            items={items.filter((val) => {
+              return val.key !== "item-4";
+            })}
           />
         </Sider>
         <Layout

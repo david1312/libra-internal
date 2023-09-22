@@ -11,7 +11,7 @@ import { formatNumber, transformDate, transformDateDB } from "@/utils/utils";
 import Table, { ColumnsType } from "antd/es/table";
 import LoadingData from "@/components/loading/LoadingData";
 
-const detailPemesanan = () => {
+const PageSalesLossDetail = () => {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [invoice, setInvoice] = useState<any>({});
@@ -185,4 +185,4 @@ const detailPemesanan = () => {
   );
 };
 
-export default withProtectedPage(detailPemesanan);
+export default withProtectedPage(PageSalesLossDetail);

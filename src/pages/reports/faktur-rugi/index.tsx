@@ -11,7 +11,7 @@ import {
   Select,
 } from "antd";
 import withProtectedPage from "@/components/hocs/withProtectedPage";
-import { getListAllSales } from "@/services/transactions";
+import { getListAllLossSales } from "@/services/transactions";
 import Table, { ColumnsType } from "antd/es/table";
 import { SearchOutlined } from "@ant-design/icons";
 import { formatNumber, transformDate, transformDateDB } from "@/utils/utils";
@@ -20,7 +20,7 @@ import { CHANNELS, LOV_CHANNELS } from "@/constants/common";
 import LoadingData from "@/components/loading/LoadingData";
 import { DataTypeSales } from "@/interfaces/interface_sales";
 
-const SalesLabaRugi = () => {
+const FakturPenjualanRugi = () => {
   const navigate = useNavigate();
   const currentPath = useLocation().pathname;
 
@@ -156,7 +156,7 @@ const SalesLabaRugi = () => {
     };
     try {
       setLoading(true);
-      const response = await getListAllSales(payload);
+      const response = await getListAllLossSales(payload);
       const salesList = response.data.data.data || [];
       const paginationData = response.data.data.pagination || {};
       const summaryData = response.data.data.summary_data || {};
@@ -340,4 +340,4 @@ const SalesLabaRugi = () => {
   );
 };
 
-export default withProtectedPage(SalesLabaRugi);
+export default withProtectedPage(FakturPenjualanRugi);

@@ -25,7 +25,7 @@ export const rawApi = axios.create({
 export function getAnomToken() {
   if (Cookies.get("semesta.anom.token")) return;
   return axios
-    .get("https://api.sunmorisemestaban.com/v1/auth/anonymous")
+    .get("https://api.libra-internal-app.com/v1/auth/anonymous")
     .then((res) => {
       Cookies.set("semesta.anom.token", res.data.data.anonymous_token, {
         expires: new Date(res.data.data.expired_at),

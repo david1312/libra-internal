@@ -2,7 +2,7 @@ import LoginBackground from "@/components/background/LoginBackground";
 import withUnProtectedPage from "@/components/hocs/withUnProctectedPage";
 import { Button, Card, Form, Input, Layout } from "antd";
 import { useAction } from "./_action";
-import Logo from "@/assets/logo.png";
+import Logo from "@/assets/logo2022.png";
 import { CopyrightOutlined } from "@ant-design/icons";
 
 function LoginPage() {
